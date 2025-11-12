@@ -59,8 +59,10 @@ func handle_jump():
 	var direction = Input.get_axis("left", "right")
 	velocity.x = lerp(velocity.x, direction * SPEED, 0.2)
 	
-	# While still pressing 'jump', character jumps higher
-	if Input.is_action_pressed("jump") and jump_timer < MAX_JUMP_TIME:
+	# While still pressing 'jump', character jumps higher, but not when
+	# character already is falling
+	if (Input.is_action_pressed("jump") and jump_timer < MAX_JUMP_TIME and
+			velocity.y <= 0):
 		velocity.y += JUMP_EXTRA_VELOCITY * (1 - jump_timer / MAX_JUMP_TIME)
 	# If 'jump' is released, then get extra jump velocity is impossible
 	if Input.is_action_just_released("jump"):

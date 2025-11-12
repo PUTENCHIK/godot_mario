@@ -1,6 +1,6 @@
 extends StaticBody2D
 
-@onready var animation: AnimationPlayer = $AnimationPlayer
+@onready var animation: AnimationPlayer = $AnimationHit
 
 var animation_playing: bool = false
 

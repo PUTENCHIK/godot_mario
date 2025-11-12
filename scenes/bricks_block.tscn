@@ -68,7 +68,7 @@ _data = {
 size = Vector2(64, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_70sxy"]
-size = Vector2(48, 2)
+size = Vector2(64, 1)
 
 [node name="BricksBlock" type="StaticBody2D"]
 script = ExtResource("1_70sxy")
@@ -87,7 +87,7 @@ shape = SubResource("RectangleShape2D_gysv1")
 [node name="BricksBlockHitArea" type="Area2D" parent="."]
 
 [node name="HitCollision" type="CollisionShape2D" parent="BricksBlockHitArea"]
-position = Vector2(0, 33)
+position = Vector2(0, 32.5)
 shape = SubResource("RectangleShape2D_70sxy")
 debug_color = Color(0.8050235, 0.3344341, 0.6428933, 0.41960785)
 
