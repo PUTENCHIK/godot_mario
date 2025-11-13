@@ -73,6 +73,20 @@ func update_flip():
 	if direction != 0:
 		sprite.flip_h = velocity.x < 0
 
+func handle_collisions():
+	var collision_count = get_slide_collision_count()
+	for c in collision_count:
+		var collision = get_slide_collision(c)
+		var collider = collision.get_collider()
+		var normal = collision.get_normal()
+		if "Enemy" in collider.name:
+			#if abs(normal.x) > 0.5:
+				#print("DEAD")
+			if normal.y < -0.5:
+				collider.dead.emit()
+				velocity.y = JUMP_VELOCITY
+				
+
 func _physics_process(delta: float) -> void:
 	match current_state:
 		State.IDLE:
@@ -85,6 +99,7 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y += GRAVITY * delta
 	
+	handle_collisions()
 	update_flip()
 	move_and_slide()
 	
