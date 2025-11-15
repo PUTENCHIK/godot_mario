@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://dyj0wmxkcqanb"]
+[gd_scene load_steps=18 format=4 uid="uid://dyj0wmxkcqanb"]
 
 [ext_resource type="Texture2D" uid="uid://b5bdsr5n3uvxf" path="res://assets/tiles/ground.png" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://cg307ngxmj8xf" path="res://scripts/main.gd" id="1_sugp2"]
@@ -247,9 +247,6 @@ sources/0 = SubResource("TileSetAtlasSource_tipki")
 sources/1 = SubResource("TileSetAtlasSource_85g3d")
 sources/2 = SubResource("TileSetAtlasSource_ya4ey")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_85g3d"]
-size = Vector2(20, 448)
-
 [node name="Main" type="Node2D"]
 script = ExtResource("1_sugp2")
 
@@ -270,29 +267,22 @@ tilemap = NodePath("../../TileMapLayer")
 
 [node name="Static" type="Node2D" parent="."]
 
-[node name="SurpriseBlock" parent="Static" instance=ExtResource("7_tipki")]
-position = Vector2(608, 288)
-
 [node name="BricksBlock" parent="Static" instance=ExtResource("8_85g3d")]
 position = Vector2(544, 288)
 
 [node name="BricksBlock2" parent="Static" instance=ExtResource("8_85g3d")]
 position = Vector2(672, 288)
 
-[node name="LeftWall" type="StaticBody2D" parent="Static"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Static/LeftWall"]
-position = Vector2(-10, 224)
-shape = SubResource("RectangleShape2D_85g3d")
-debug_color = Color(0.90588236, 0.4745098, 0, 0.41960785)
-
 [node name="SimpleEnemy" parent="." instance=ExtResource("9_85g3d")]
-position = Vector2(765, 240)
+position = Vector2(936, 144)
+direction = true
 
 [node name="SimpleEnemy2" parent="." instance=ExtResource("9_85g3d")]
-position = Vector2(1022, 324)
+position = Vector2(1008, 144)
 direction = true
 
 [node name="SimpleEnemy3" parent="." instance=ExtResource("9_85g3d")]
-position = Vector2(253, 154)
-direction = true
+position = Vector2(864, 144)
+
+[node name="SurpriseBlock" parent="." instance=ExtResource("7_tipki")]
+position = Vector2(608, 288)

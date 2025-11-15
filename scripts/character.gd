@@ -6,15 +6,18 @@ const JUMP_EXTRA_VELOCITY = -25.0
 const GRAVITY = 1500.0
 const MAX_JUMP_TIME = 0.8
 
-enum State {IDLE, RUN, JUMP}
+enum State {IDLE, RUN, JUMP, DEAD}
 
-@onready var animation = get_node("AnimationPlayer")
-@onready var sprite = get_node("CharacterSprite")
+@onready var animation = $AnimationPlayer
+@onready var sprite = $CharacterSprite
+@onready var collision = $CharacterCollision
 
 var current_state: State = State.IDLE
 var jump_timer: float = 0.0
+var jump_from_enemy: bool = false
 
 signal hit_by_block
+signal hit_by_enemy
 
 func set_state(new_state: State):
 	current_state = new_state
@@ -24,6 +27,7 @@ func set_state(new_state: State):
 func _ready() -> void:
 	set_state(State.IDLE)
 	hit_by_block.connect(_on_hit_by_block)
+	hit_by_enemy.connect(_on_hit_by_enemy)
 
 func handle_idle():
 	animation.play("idle")
@@ -55,14 +59,13 @@ func handle_run():
 
 func handle_jump():
 	animation.play("jump")
-	
 	var direction = Input.get_axis("left", "right")
 	velocity.x = lerp(velocity.x, direction * SPEED, 0.2)
 	
 	# While still pressing 'jump', character jumps higher, but not when
-	# character already is falling
+	# character already is falling and unless he jumped from enemy
 	if (Input.is_action_pressed("jump") and jump_timer < MAX_JUMP_TIME and
-			velocity.y <= 0):
+			velocity.y <= 0 and not jump_from_enemy):
 		velocity.y += JUMP_EXTRA_VELOCITY * (1 - jump_timer / MAX_JUMP_TIME)
 	# If 'jump' is released, then get extra jump velocity is impossible
 	if Input.is_action_just_released("jump"):
@@ -76,16 +79,17 @@ func update_flip():
 func handle_collisions():
 	var collision_count = get_slide_collision_count()
 	for c in collision_count:
-		var collision = get_slide_collision(c)
-		var collider = collision.get_collider()
-		var normal = collision.get_normal()
+		var coll = get_slide_collision(c)
+		var collider = coll.get_collider()
+		var normal = coll.get_normal()
 		if "Enemy" in collider.name:
-			#if abs(normal.x) > 0.5:
-				#print("DEAD")
-			if normal.y < -0.5:
+			if abs(normal.x) > 0.5:
+				hit_by_enemy.emit()
+				set_state(State.DEAD)
+			elif normal.y < -0.5:
 				collider.dead.emit()
 				velocity.y = JUMP_VELOCITY
-				
+				jump_from_enemy = true
 
 func _physics_process(delta: float) -> void:
 	match current_state:
@@ -95,23 +99,34 @@ func _physics_process(delta: float) -> void:
 			handle_run()
 		State.JUMP:
 			handle_jump()
+		State.DEAD:
+			pass
 	
-	if not is_on_floor():
-		velocity.y += GRAVITY * delta
-	
-	handle_collisions()
-	update_flip()
-	move_and_slide()
-	
-	jump_timer += delta
-	
-	if is_on_floor() and current_state == State.JUMP:
-		set_state(State.RUN if abs(velocity.x) > 0 else State.IDLE)
-	if not is_on_floor() and current_state in [State.IDLE, State.RUN]:
-		set_state(State.JUMP)
+	if not current_state == State.DEAD:
+		if not is_on_floor():
+			velocity.y += GRAVITY * delta
+		
+		handle_collisions()
+		update_flip()
+		move_and_slide()
+		
+		jump_timer += delta
+		
+		if is_on_floor() and current_state == State.JUMP:
+			jump_from_enemy = false
+			set_state(State.RUN if abs(velocity.x) > 0 else State.IDLE)
+		if not is_on_floor() and current_state in [State.IDLE, State.RUN]:
+			set_state(State.JUMP)
 
 func _on_hit_by_block():
 	var threshold = GRAVITY / 8
 	if velocity.y < threshold:
 		velocity.y = threshold
 		jump_timer += MAX_JUMP_TIME
+
+func _on_hit_by_enemy():
+	velocity *= 0
+	collision.disabled = true
+	animation.play("dead")
+	await animation.animation_finished
+	self.queue_free()
