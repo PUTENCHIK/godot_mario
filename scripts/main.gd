@@ -1,24 +1,61 @@
 extends Node2D
 
-@onready var character: CharacterBody2D = $Character
+@onready var menu: Node2D = $UI/Menu
+@onready var character_scene = preload("res://scenes/living/character.tscn")
+@onready var world = $World
 
-#var bricks_blocks: Array[StaticBody2D] = []
+var current_level: Node2D = null
+var levels: Dictionary = {
+	"First": preload("res://scenes/levels/first_level.tscn"),
+}
+var character: CharacterBody2D = null
+var camera: Camera2D = null
 
 func _ready() -> void:
-	#link_character_with_bricks_blocks()
-	pass
+	character = character_scene.instantiate()
+	camera = character.get_node("CharacterCamera")
+	world.add_child(character)
+	if len(levels.keys()) == 0:
+		print("[ERROR] No levels")
+		return
+	load_level("First")
 
-#func link_character_with_bricks_blocks():
-	#var static_node = $Static
-	#if static_node:
-		#for child in static_node.get_children():
-			#if child.name.begins_with("BricksBlock") and child is StaticBody2D:
-				#bricks_blocks.append(child)
-	#
-	#for brick in bricks_blocks:
-		#pass
-	#
-	#character.hit_bricks_block.connect(_on_hit_bricks_block)
-#
-#func _on_hit_bricks_block():
-	#pass
+func load_level(level_name: String):
+	if current_level:
+		current_level.queue_free()
+	if level_name not in levels:
+		print("[ERROR] Not such level: " + level_name)
+		return
+	current_level = levels[level_name].instantiate()
+	world.add_child(current_level)
+	var spawn = current_level.get_node("Spawn")
+	if spawn == null:
+		print("[ERROR] Level must have marker 'Spawn'")
+		return
+	character.global_position = spawn.global_position
+	
+	limit_character_camera()
+	set_menu_size()
+
+func limit_character_camera():
+	if camera == null:
+		print("[ERROR] Camera can't be null")
+		return
+	if current_level == null:
+		print("[ERROR] Current level can't be null")
+		return
+	var tilemap: TileMapLayer = current_level.get_node("TileMapLayer")
+	if tilemap == null:
+		print("[ERROR] Current level must have TileMapLayer")
+		return
+	var map_rect = tilemap.get_used_rect()
+	var tile_size = tilemap.tile_set.tile_size
+	var map_size = map_rect.size * tile_size
+	camera.limit_right = map_size.x
+	camera.limit_bottom = map_size.y - tile_size.y
+
+func set_menu_size():
+	var window_size: Vector2i = DisplayServer.window_get_size()
+	var container: CenterContainer = menu.get_node("CenterContainer")
+	container.size.x = window_size.x
+	container.size.y = window_size.y

@@ -7,7 +7,7 @@ const GRAVITY = 70.0
 @onready var sprite: Sprite2D = $SimpleEnemySprite
 @onready var collision: CollisionShape2D = $SimpleEnemyCollision
 
-enum State {IDLE, WALK, FALL, DEAD}
+enum State {IDLE, WALK, DEAD}
 
 var SPEED: float = BASE_SPEED - SPEED_DELTA + Globals.random.randf_range(0, 2*SPEED_DELTA)
 var current_state: State
@@ -35,8 +35,8 @@ func handle_walk():
 	
 	velocity.x = get_dir_coef() * SPEED
 
-func handle_fall():
-	animation.play("fall")
+#func handle_fall():
+	#animation.play("fall")
 
 func update_flip():
 	sprite.flip_h = not direction
@@ -58,14 +58,14 @@ func _physics_process(delta: float) -> void:
 			handle_idle()
 		State.WALK:
 			handle_walk()
-		State.FALL:
-			handle_fall()
-		State.FALL:
+		#State.FALL:
+			#handle_fall()
+		State.DEAD:
 			pass
 	
 	if current_state != State.DEAD and not is_on_floor():
-		if current_state != State.FALL:
-			set_state(State.FALL)
+		#if current_state != State.FALL:
+			#set_state(State.FALL)
 		velocity.y += GRAVITY
 
 	if current_state != State.DEAD:
@@ -73,8 +73,8 @@ func _physics_process(delta: float) -> void:
 		update_flip()
 		move_and_slide()
 		
-		if is_on_floor() and current_state == State.FALL:
-			set_state(State.WALK)
+		#if is_on_floor() and current_state == State.FALL:
+			#set_state(State.WALK)
 
 func _on_dead():
 	if current_state != State.DEAD:
