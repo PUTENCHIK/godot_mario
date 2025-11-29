@@ -35,9 +35,6 @@ func handle_walk():
 	
 	velocity.x = get_dir_coef() * SPEED
 
-#func handle_fall():
-	#animation.play("fall")
-
 func update_flip():
 	sprite.flip_h = not direction
 
@@ -58,23 +55,16 @@ func _physics_process(delta: float) -> void:
 			handle_idle()
 		State.WALK:
 			handle_walk()
-		#State.FALL:
-			#handle_fall()
 		State.DEAD:
 			pass
 	
 	if current_state != State.DEAD and not is_on_floor():
-		#if current_state != State.FALL:
-			#set_state(State.FALL)
 		velocity.y += GRAVITY
 
 	if current_state != State.DEAD:
 		handle_collisions()
 		update_flip()
 		move_and_slide()
-		
-		#if is_on_floor() and current_state == State.FALL:
-			#set_state(State.WALK)
 
 func _on_dead():
 	if current_state != State.DEAD:

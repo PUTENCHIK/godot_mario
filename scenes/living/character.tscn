@@ -243,6 +243,7 @@ _data = {
 size = Vector2(31, 50)
 
 [node name="Character" type="CharacterBody2D"]
+z_index = 1
 script = ExtResource("1_04vni")
 
 [node name="CharacterSprite" type="Sprite2D" parent="."]

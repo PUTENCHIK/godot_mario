@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://ma228mriiyji"]
+[gd_scene load_steps=13 format=3 uid="uid://ma228mriiyji"]
 
 [ext_resource type="Script" uid="uid://dig18bl1o8did" path="res://scripts/surprise_block.gd" id="1_od2x7"]
 [ext_resource type="Texture2D" uid="uid://bfik6bm2alxo8" path="res://assets/tiles/surprise.png" id="2_od2x7"]
+[ext_resource type="Texture2D" uid="uid://dekhars522a" path="res://assets/tiles/disabled_block.png" id="3_831c8"]
 
 [sub_resource type="Animation" id="Animation_6o6qa"]
 length = 0.001
@@ -32,7 +33,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_od2x7"]
 resource_name = "hit"
-length = 0.5
+length = 0.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -40,10 +41,10 @@ tracks/0/path = NodePath("SurpriseBlockSprite:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.16666667, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.05, 0.08, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(0, -12), Vector2(0, 0)]
+"values": [Vector2(0, 0), Vector2(0, -12), Vector2(0, -12), Vector2(0, -10), Vector2(0, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -52,10 +53,10 @@ tracks/1/path = NodePath("SurpriseBlockCollision:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.16666667, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.05, 0.08, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(0, -12), Vector2(0, 0)]
+"values": [Vector2(0, 0), Vector2(0, -12), Vector2(0, -12), Vector2(0, -10), Vector2(0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ohp6l"]
@@ -144,10 +145,51 @@ tracks/2/keys = {
 "values": [0, 2]
 }
 
+[sub_resource type="Animation" id="Animation_7ms58"]
+resource_name = "disabled"
+length = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SurpriseBlockSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_831c8")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SurpriseBlockSprite:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SurpriseBlockSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ebqsm"]
 _data = {
 &"RESET": SubResource("Animation_ebqsm"),
-&"blink": SubResource("Animation_ohp6l")
+&"blink": SubResource("Animation_ohp6l"),
+&"disabled": SubResource("Animation_7ms58")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_od2x7"]
@@ -157,6 +199,7 @@ size = Vector2(64, 64)
 size = Vector2(64, 2)
 
 [node name="SurpriseBlock" type="StaticBody2D"]
+z_index = 10
 script = ExtResource("1_od2x7")
 
 [node name="SurpriseBlockSprite" type="Sprite2D" parent="."]
@@ -168,7 +211,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_ohp6l")
 }
 
-[node name="AnimationBlink" type="AnimationPlayer" parent="."]
+[node name="AnimationState" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_ebqsm")
 }

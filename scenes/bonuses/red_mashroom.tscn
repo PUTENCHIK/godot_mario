@@ -1,0 +1,82 @@
+[gd_scene load_steps=7 format=3 uid="uid://dtutxxo2b6c38"]
+
+[ext_resource type="Script" uid="uid://co6gsykvaxbo8" path="res://scripts/red_mashroom.gd" id="1_3fmdd"]
+[ext_resource type="Texture2D" uid="uid://c1j4vhc654558" path="res://assets/bonuses/red_mashroom.png" id="1_q62dt"]
+
+[sub_resource type="Animation" id="Animation_3fmdd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RedMashroomCollision:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RedMashroomSprite:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_q62dt"]
+resource_name = "appear"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RedMashroomCollision:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -64), Vector2(0, -64)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RedMashroomSprite:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -64), Vector2(0, -64)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ogt58"]
+_data = {
+&"RESET": SubResource("Animation_3fmdd"),
+&"appear": SubResource("Animation_q62dt")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3fmdd"]
+size = Vector2(64, 64)
+
+[node name="RedMashroom" type="CharacterBody2D"]
+z_index = -1
+script = ExtResource("1_3fmdd")
+
+[node name="RedMashroomSprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_q62dt")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ogt58")
+}
+
+[node name="RedMashroomCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_3fmdd")

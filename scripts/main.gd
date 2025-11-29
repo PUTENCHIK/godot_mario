@@ -1,8 +1,9 @@
 extends Node2D
 
-@onready var menu: Node2D = $UI/Menu
+@onready var menu: Node = $UI/Menu
 @onready var character_scene = preload("res://scenes/living/character.tscn")
 @onready var world = $World
+@onready var show_fps = $"UI/Show FPS"
 
 var current_level: Node2D = null
 var levels: Dictionary = {
@@ -19,6 +20,8 @@ func _ready() -> void:
 		print("[ERROR] No levels")
 		return
 	load_level("First")
+	
+	Settings.show_fps.connect(_on_toggle_show_fps)
 
 func load_level(level_name: String):
 	if current_level:
@@ -56,6 +59,9 @@ func limit_character_camera():
 
 func set_menu_size():
 	var window_size: Vector2i = DisplayServer.window_get_size()
-	var container: CenterContainer = menu.get_node("CenterContainer")
+	var container: CenterContainer = menu.get_node("Panel/CenterContainer")
 	container.size.x = window_size.x
 	container.size.y = window_size.y
+
+func _on_toggle_show_fps(toggle_on: bool):
+	show_fps.visible = toggle_on

@@ -1,9 +1,9 @@
 extends CharacterBody2D
 
 const SPEED = 250.0
-const JUMP_VELOCITY = -450.0
-const JUMP_EXTRA_VELOCITY = -25.0
-const GRAVITY = 1500.0
+const JUMP_VELOCITY = -550.0
+const JUMP_EXTRA_VELOCITY = -35.0
+const GRAVITY = 2100.0
 const MAX_JUMP_TIME = 0.8
 
 enum State {IDLE, RUN, JUMP, DEAD}
@@ -28,6 +28,7 @@ func _ready() -> void:
 	set_state(State.IDLE)
 	hit_by_block.connect(_on_hit_by_block)
 	hit_by_enemy.connect(_on_hit_by_enemy)
+	Globals.game_over.connect(_on_hit_by_enemy)
 
 func handle_idle():
 	animation.play("idle")
@@ -79,17 +80,19 @@ func update_flip():
 func handle_collisions():
 	var collision_count = get_slide_collision_count()
 	for c in collision_count:
-		var coll = get_slide_collision(c)
-		var collider = coll.get_collider()
-		var normal = coll.get_normal()
-		if "Enemy" in collider.name:
-			if abs(normal.x) > 0.5:
-				hit_by_enemy.emit()
-				set_state(State.DEAD)
-			elif normal.y < -0.5:
-				collider.dead.emit()
-				velocity.y = JUMP_VELOCITY
-				jump_from_enemy = true
+		var slide_collision = get_slide_collision(c)
+		var collider = slide_collision.get_collider()
+		var normal = slide_collision.get_normal()
+		if collider:
+			if "Enemy" in collider.name:
+				if abs(normal.x) > 0.5:
+					Globals.game_over.emit()
+				elif normal.y < -0.5:
+					collider.dead.emit()
+					velocity.y = JUMP_VELOCITY
+					jump_from_enemy = true
+			elif "RedMashroom" in collider.name:
+				collider.queue_free()
 
 func _physics_process(delta: float) -> void:
 	match current_state:
@@ -125,8 +128,10 @@ func _on_hit_by_block():
 		jump_timer += MAX_JUMP_TIME
 
 func _on_hit_by_enemy():
+	set_state(State.DEAD)
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	velocity *= 0
 	collision.disabled = true
 	animation.play("dead")
 	await animation.animation_finished
-	self.queue_free()
+	process_mode = Node.PROCESS_MODE_INHERIT

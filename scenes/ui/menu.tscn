@@ -1,0 +1,74 @@
+[gd_scene load_steps=4 format=3 uid="uid://dbrpvv01xqhmr"]
+
+[ext_resource type="Script" uid="uid://cn2cqah3et435" path="res://scripts/menu.gd" id="1_vjb58"]
+[ext_resource type="Theme" uid="uid://6fqxqvibi1ml" path="res://themes/main.tres" id="1_yqeox"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wedc3"]
+bg_color = Color(0.18039216, 0.18039216, 0.18039216, 0.81960785)
+
+[node name="Menu" type="Node"]
+script = ExtResource("1_vjb58")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wedc3")
+
+[node name="CenterContainer" type="CenterContainer" parent="Panel"]
+layout_mode = 0
+offset_right = 784.0
+offset_bottom = 408.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/CenterContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Main" type="VBoxContainer" parent="Panel/CenterContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="PauseLabel" type="Label" parent="Panel/CenterContainer/MarginContainer/Main"]
+layout_mode = 2
+theme = ExtResource("1_yqeox")
+text = "PAUSE"
+horizontal_alignment = 1
+
+[node name="Content" type="VBoxContainer" parent="Panel/CenterContainer/MarginContainer/Main"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/CenterContainer/MarginContainer/Main/Content"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/CenterContainer/MarginContainer/Main/Content/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_yqeox")
+theme_override_font_sizes/font_size = 18
+text = "Show FPS:"
+
+[node name="CheckButton" type="CheckButton" parent="Panel/CenterContainer/MarginContainer/Main/Content/HBoxContainer"]
+layout_mode = 2
+button_pressed = true
+
+[node name="ResumeButton" type="Button" parent="Panel/CenterContainer/MarginContainer/Main/Content"]
+layout_mode = 2
+theme = ExtResource("1_yqeox")
+theme_override_font_sizes/font_size = 18
+text = "Resume"
+
+[node name="ExitButton" type="Button" parent="Panel/CenterContainer/MarginContainer/Main/Content"]
+layout_mode = 2
+theme = ExtResource("1_yqeox")
+theme_override_font_sizes/font_size = 18
+text = "Exit"
+
+[connection signal="toggled" from="Panel/CenterContainer/MarginContainer/Main/Content/HBoxContainer/CheckButton" to="." method="_on_check_button_toggled"]
+[connection signal="pressed" from="Panel/CenterContainer/MarginContainer/Main/Content/ResumeButton" to="." method="_resume_game"]
+[connection signal="pressed" from="Panel/CenterContainer/MarginContainer/Main/Content/ExitButton" to="." method="_exit_game"]

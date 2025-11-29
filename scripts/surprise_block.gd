@@ -1,17 +1,33 @@
 extends StaticBody2D
 
-@onready var animation_blink: AnimationPlayer = $AnimationBlink
+@onready var red_mashroom_scene = preload("res://scenes/bonuses/red_mashroom.tscn")
+@onready var animation_state: AnimationPlayer = $AnimationState
 @onready var animation_hit: AnimationPlayer = $AnimationHit
+@onready var hit_area_collision: CollisionShape2D = $SurpriseBlockHitArea/HitCollision
 
-var animation_playing: bool = false
+# Has bonus spawned already
+var has_spawned: bool = false
 
 func _ready() -> void:
-	animation_blink.play("blink");
+	animation_state.play("blink");
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body is CharacterBody2D and body.name == "Character" and not animation_playing:
+	if body is CharacterBody2D and body.name == "Character" and not has_spawned \
+			and not animation_hit.is_playing():
 		body.hit_by_block.emit()
-		animation_playing = true
 		animation_hit.play("hit")
+		_spawn_bonus()
 		await animation_hit.animation_finished
-		animation_playing = false
+		_disable()
+
+func _spawn_bonus():
+	if has_spawned:
+		return
+	has_spawned = true
+	var bonus: Node2D = red_mashroom_scene.instantiate()
+	add_child(bonus)
+	bonus.global_position = global_position
+
+func _disable():
+	animation_state.play("disabled")
+	hit_area_collision.disabled = true

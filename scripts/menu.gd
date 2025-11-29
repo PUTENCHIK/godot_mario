@@ -1,22 +1,27 @@
-extends Node2D
+extends Node
+
+@onready var content: Panel = $Panel
 
 func _ready() -> void:
-	visible = false
+	content.visible = false
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("menu"):
-		if visible:
+		if content.visible:
 			_resume_game()
 		else:
 			_pause_game()
 
 func _pause_game():
 	Globals.pause()
-	show()
+	content.show()
 
 func _resume_game():
 	Globals.resume()
-	hide()
+	content.hide()
 
 func _exit_game():
 	Globals.exit()
+
+func _on_check_button_toggled(toggled_on: bool) -> void:
+	Settings.show_fps.emit(toggled_on)
