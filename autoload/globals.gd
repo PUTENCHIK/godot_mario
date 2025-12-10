@@ -26,6 +26,8 @@ signal restart_level
 signal character_start_rebirth
 signal character_end_rebirth
 
+signal level_finished
+
 func _ready() -> void:
 	game_over.connect(_on_game_over)
 

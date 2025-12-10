@@ -1,7 +1,7 @@
 extends Node
 
 const TIME_RANKS = 4
-const SCORE_RANKS = 5
+const SCORE_RANKS = 6
 
 @onready var score_label: Label = $ScoreBox/Score
 @onready var time_label: Label = $TimeBox/Time
@@ -41,3 +41,4 @@ func _on_character_died():
 
 func _on_character_resurrected():
 	decrease_time = true
+	time_left = Globals.TIME_ON_LEVEL

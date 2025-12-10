@@ -8,6 +8,7 @@ extends Node2D
 var current_level: Node2D = null
 var levels: Dictionary = {
 	"First": preload("res://scenes/levels/first_level.tscn"),
+	"Second": preload("res://scenes/levels/second_level.tscn"),
 }
 var character: CharacterBody2D = null
 var camera: Camera2D = null
@@ -18,12 +19,13 @@ func _ready() -> void:
 	if len(levels.keys()) == 0:
 		print("[ERROR] No levels")
 		return
-	load_level("First")
+	load_level("Second")
 	character_to_spawn()
 	limit_character_camera()
 	set_menu_size()
 	
 	Settings.show_fps.connect(_on_toggle_show_fps)
+	Globals.level_finished.connect(_on_level_finished)
 
 func load_character():
 	if character:
@@ -76,6 +78,13 @@ func _on_toggle_show_fps(toggle_on: bool):
 
 func _on_restart_level():
 	load_character()
+	character_to_spawn()
+	limit_character_camera()
+	set_menu_size()
+
+func _on_level_finished():
+	load_character()
+	load_level("Second")
 	character_to_spawn()
 	limit_character_camera()
 	set_menu_size()
