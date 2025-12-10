@@ -68,6 +68,8 @@ size = Vector2(64, 64)
 
 [node name="RedMashroom" type="CharacterBody2D"]
 z_index = -1
+collision_layer = 16
+collision_mask = 29
 script = ExtResource("1_3fmdd")
 
 [node name="RedMashroomSprite" type="Sprite2D" parent="."]

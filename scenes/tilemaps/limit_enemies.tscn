@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://kenad22do7js"]
+
+[ext_resource type="TileSet" uid="uid://c4xo2vmiirdqi" path="res://resources/tileset_limit_enemies.tres" id="1_21frw"]
+
+[node name="LimitEnemies" type="TileMapLayer"]
+z_index = -1
+tile_set = ExtResource("1_21frw")
+rendering_quadrant_size = 64

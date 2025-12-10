@@ -12,7 +12,7 @@ func _ready() -> void:
 	animation_state.play("blink");
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body is CharacterBody2D and body.name == "Character" and not has_spawned \
+	if body is CharacterBody2D and "Character" in body.name and not has_spawned \
 			and not animation_hit.is_playing():
 		body.hit_by_block.emit()
 		animation_hit.play("hit")

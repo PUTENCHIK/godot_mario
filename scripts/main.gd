@@ -13,15 +13,24 @@ var character: CharacterBody2D = null
 var camera: Camera2D = null
 
 func _ready() -> void:
-	character = character_scene.instantiate()
-	camera = character.get_node("CharacterCamera")
-	world.add_child(character)
+	Globals.restart_level.connect(_on_restart_level)
+	load_character()
 	if len(levels.keys()) == 0:
 		print("[ERROR] No levels")
 		return
 	load_level("First")
+	character_to_spawn()
+	limit_character_camera()
+	set_menu_size()
 	
 	Settings.show_fps.connect(_on_toggle_show_fps)
+
+func load_character():
+	if character:
+		character.queue_free()
+	character = character_scene.instantiate()
+	camera = character.get_node("CharacterCamera")
+	world.add_child(character)
 
 func load_level(level_name: String):
 	if current_level:
@@ -31,14 +40,13 @@ func load_level(level_name: String):
 		return
 	current_level = levels[level_name].instantiate()
 	world.add_child(current_level)
+
+func character_to_spawn():
 	var spawn = current_level.get_node("Spawn")
 	if spawn == null:
 		print("[ERROR] Level must have marker 'Spawn'")
 		return
 	character.global_position = spawn.global_position
-	
-	limit_character_camera()
-	set_menu_size()
 
 func limit_character_camera():
 	if camera == null:
@@ -47,15 +55,15 @@ func limit_character_camera():
 	if current_level == null:
 		print("[ERROR] Current level can't be null")
 		return
-	var tilemap: TileMapLayer = current_level.get_node("TileMapLayer")
+	var tilemap: TileMapLayer = current_level.get_node("TileMaps/Level")
 	if tilemap == null:
-		print("[ERROR] Current level must have TileMapLayer")
+		print("[ERROR] Current level must have TileMaps/Level")
 		return
 	var map_rect = tilemap.get_used_rect()
 	var tile_size = tilemap.tile_set.tile_size
 	var map_size = map_rect.size * tile_size
 	camera.limit_right = map_size.x
-	camera.limit_bottom = map_size.y - tile_size.y
+	camera.limit_bottom = map_size.y
 
 func set_menu_size():
 	var window_size: Vector2i = DisplayServer.window_get_size()
@@ -65,3 +73,9 @@ func set_menu_size():
 
 func _on_toggle_show_fps(toggle_on: bool):
 	show_fps.visible = toggle_on
+
+func _on_restart_level():
+	load_character()
+	character_to_spawn()
+	limit_character_camera()
+	set_menu_size()

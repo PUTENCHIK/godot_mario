@@ -1,16 +1,17 @@
 extends CharacterBody2D
 
 const SPEED = 250.0
-const JUMP_VELOCITY = -550.0
-const JUMP_EXTRA_VELOCITY = -35.0
-const GRAVITY = 2100.0
-const MAX_JUMP_TIME = 0.8
+const JUMP_VELOCITY = -600.0
+const JUMP_EXTRA_VELOCITY = -55.0
+const GRAVITY = 3200.0
+const MAX_JUMP_TIME = 1.0
 
 enum State {IDLE, RUN, JUMP, DEAD}
 
 @onready var animation = $AnimationPlayer
 @onready var sprite = $CharacterSprite
 @onready var collision = $CharacterCollision
+@onready var reward_label_scene: PackedScene = preload("res://scenes/ui/reward_label.tscn")
 
 var current_state: State = State.IDLE
 var jump_timer: float = 0.0
@@ -92,7 +93,7 @@ func handle_collisions():
 					velocity.y = JUMP_VELOCITY
 					jump_from_enemy = true
 			elif "RedMashroom" in collider.name:
-				collider.queue_free()
+				collider.eaten.emit()
 
 func _physics_process(delta: float) -> void:
 	match current_state:
@@ -105,21 +106,22 @@ func _physics_process(delta: float) -> void:
 		State.DEAD:
 			pass
 	
-	if not current_state == State.DEAD:
-		if not is_on_floor():
-			velocity.y += GRAVITY * delta
-		
-		handle_collisions()
-		update_flip()
-		move_and_slide()
-		
-		jump_timer += delta
-		
-		if is_on_floor() and current_state == State.JUMP:
-			jump_from_enemy = false
-			set_state(State.RUN if abs(velocity.x) > 0 else State.IDLE)
-		if not is_on_floor() and current_state in [State.IDLE, State.RUN]:
-			set_state(State.JUMP)
+	if not is_on_floor():
+		velocity.y += GRAVITY * delta
+	
+	handle_collisions()
+	update_flip()
+	move_and_slide()
+	
+	jump_timer += delta
+	
+	if is_on_floor() and current_state != State.JUMP:
+		Globals.reset_multi_kill()
+	if is_on_floor() and current_state == State.JUMP:
+		jump_from_enemy = false
+		set_state(State.RUN if abs(velocity.x) > 0 else State.IDLE)
+	if not is_on_floor() and current_state in [State.IDLE, State.RUN]:
+		set_state(State.JUMP)
 
 func _on_hit_by_block():
 	var threshold = GRAVITY / 8
@@ -130,8 +132,8 @@ func _on_hit_by_block():
 func _on_hit_by_enemy():
 	set_state(State.DEAD)
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	set_collision_mask_value(4, false)
 	velocity *= 0
-	collision.disabled = true
 	animation.play("dead")
 	await animation.animation_finished
 	process_mode = Node.PROCESS_MODE_INHERIT

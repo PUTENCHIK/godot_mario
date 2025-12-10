@@ -71,6 +71,7 @@ size = Vector2(64, 64)
 size = Vector2(64, 1)
 
 [node name="BricksBlock" type="StaticBody2D"]
+collision_mask = 15
 script = ExtResource("1_70sxy")
 
 [node name="BricksBlockSprite" type="Sprite2D" parent="."]
@@ -85,6 +86,7 @@ libraries = {
 shape = SubResource("RectangleShape2D_gysv1")
 
 [node name="BricksBlockHitArea" type="Area2D" parent="."]
+collision_mask = 28
 
 [node name="HitCollision" type="CollisionShape2D" parent="BricksBlockHitArea"]
 position = Vector2(0, 32.5)

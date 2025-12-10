@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxvwinm8cbet4"]
+
+[ext_resource type="TileSet" uid="uid://bkpisicrof81u" path="res://resources/tileset_outer_borders.tres" id="1_tcq6y"]
+
+[node name="OuterBorders" type="TileMapLayer"]
+tile_set = ExtResource("1_tcq6y")
+rendering_quadrant_size = 64

@@ -21,4 +21,3 @@ script = ExtResource("11_ya4ey")
 
 [node name="Menu" parent="UI" instance=ExtResource("2_sugp2")]
 process_mode = 3
-visible = false

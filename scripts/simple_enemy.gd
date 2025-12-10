@@ -3,9 +3,12 @@ extends CharacterBody2D
 const BASE_SPEED = 100.0
 const SPEED_DELTA = 20.0
 const GRAVITY = 70.0
+const SCORE_REWARD = 200
 @onready var animation: AnimationPlayer = $AnimationPlayer
 @onready var sprite: Sprite2D = $SimpleEnemySprite
 @onready var collision: CollisionShape2D = $SimpleEnemyCollision
+
+@onready var reward_label_scene: PackedScene = preload("res://scenes/ui/reward_label.tscn")
 
 enum State {IDLE, WALK, DEAD}
 
@@ -26,6 +29,8 @@ func set_state(state: State):
 func _ready() -> void:
 	set_state(State.WALK)
 	dead.connect(_on_dead)
+	Globals.character_start_rebirth.connect(_on_character_died)
+	Globals.character_end_rebirth.connect(_on_character_resurrected)
 
 func handle_idle():
 	animation.play("idle")
@@ -44,10 +49,11 @@ func handle_collisions():
 		var coll = get_slide_collision(c)
 		var collider = coll.get_collider()
 		var normal = coll.get_normal()
-		if collider.name != "Character":
-			if abs(normal.x) == 1:
-				velocity.x -= get_dir_coef() * 2 * SPEED
-				direction = not direction
+		if collider:
+			if collider.name != "Character":
+				if abs(normal.x) == 1:
+					velocity.x -= get_dir_coef() * 2 * SPEED
+					direction = not direction
 
 func _physics_process(delta: float) -> void:
 	match current_state:
@@ -72,5 +78,16 @@ func _on_dead():
 		SPEED = 0
 		collision.disabled = true
 		animation.play("dead")
+		Globals.increase_multi_kill()
+		var reward_label: Node2D = reward_label_scene.instantiate()
+		reward_label.score = SCORE_REWARD
+		add_child(reward_label)
+		reward_label.global_position = global_position
 		await animation.animation_finished
 		self.queue_free()
+
+func _on_character_died():
+	set_collision_mask_value(3, false)
+
+func _on_character_resurrected():
+	set_collision_mask_value(3, true)

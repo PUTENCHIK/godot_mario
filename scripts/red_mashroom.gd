@@ -2,15 +2,23 @@ extends CharacterBody2D
 
 const SPEED = 250.0
 const GRAVITY = 75.0
+const SCORE_REWARD = 1000
 
 @onready var animation: AnimationPlayer = $AnimationPlayer
+@onready var collision: CollisionShape2D = $RedMashroomCollision
+@onready var sprite: Sprite2D = $RedMashroomSprite
+@onready var reward_label_scene: PackedScene = preload("res://scenes/ui/reward_label.tscn")
 
 var animation_finished: bool = false
 var direction: bool = true
+var is_eaten: bool = false
+
+signal eaten
 
 func _ready() -> void:
 	animation.play("appear")
 	animation.animation_finished.connect(_on_appear_animation_finished)
+	eaten.connect(_on_eaten)
 
 func get_dir_coef():
 	return 1 if direction else -1
@@ -27,7 +35,7 @@ func handle_collisions():
 				direction = not direction
 
 func _physics_process(delta: float) -> void:
-	if animation_finished:
+	if animation_finished and not is_eaten:
 		if not is_on_floor():
 			velocity.y += GRAVITY
 		
@@ -37,3 +45,16 @@ func _physics_process(delta: float) -> void:
 
 func _on_appear_animation_finished(empty):
 	animation_finished = true
+
+func _on_eaten():
+	if not is_eaten:
+		is_eaten = true
+		var reward_label: Node2D = reward_label_scene.instantiate()
+		reward_label.score = SCORE_REWARD
+		get_parent().add_child(reward_label)
+		reward_label.global_position = global_position
+		reward_label.global_position.y -= 64
+		sprite.visible = false
+		collision.disabled = true
+		await reward_label.animation.animation_finished
+		queue_free()
