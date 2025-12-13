@@ -22,7 +22,10 @@ Settings="*res://autoload/settings.gd"
 
 [display]
 
-window/size/viewport_height=704
+window/size/viewport_height=896
+window/size/resizable=false
+window/size/borderless=true
+window/subwindows/embed_subwindows=false
 
 [input]
 

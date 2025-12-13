@@ -1,22 +1,22 @@
 [gd_scene load_steps=4 format=3 uid="uid://c7wk7dhm1ls0y"]
 
-[ext_resource type="Texture2D" uid="uid://b5070rs8weaiy" path="res://assets/backgrounds/cloud1.png" id="1_bbsj4"]
-[ext_resource type="Script" uid="uid://cjngq04tahgcb" path="res://scripts/level_finish.gd" id="1_bkbys"]
+[ext_resource type="Script" uid="uid://cjngq04tahgcb" path="res://scripts/level_finish.gd" id="1_hljce"]
+[ext_resource type="Texture2D" uid="uid://bt1leuc6vinuu" path="res://assets/backgrounds/castle1.png" id="2_hljce"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bkbys"]
-size = Vector2(266, 208)
+size = Vector2(72, 144)
 
-[node name="LevelFinish" type="Node2D"]
-script = ExtResource("1_bkbys")
+[node name="FinishLittleCastle" type="Node2D"]
+script = ExtResource("1_hljce")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(2, 2)
-texture = ExtResource("1_bbsj4")
+texture = ExtResource("2_hljce")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-2, 103)
 shape = SubResource("RectangleShape2D_bkbys")
 debug_color = Color(0, 0.65167737, 0.0028637797, 0.41960785)
 
