@@ -196,7 +196,7 @@ _data = {
 size = Vector2(64, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6o6qa"]
-size = Vector2(64, 2)
+size = Vector2(64, 1)
 
 [node name="SurpriseBlock" type="StaticBody2D"]
 z_index = 10
@@ -226,7 +226,7 @@ shape = SubResource("RectangleShape2D_od2x7")
 collision_mask = 28
 
 [node name="HitCollision" type="CollisionShape2D" parent="SurpriseBlockHitArea"]
-position = Vector2(0, 33)
+position = Vector2(0, 32.5)
 shape = SubResource("RectangleShape2D_6o6qa")
 debug_color = Color(0.71920705, 0.38138023, 0.7546973, 0.41960785)
 

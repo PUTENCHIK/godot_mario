@@ -19,11 +19,13 @@ func _ready() -> void:
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is CharacterBody2D and "Character" in body.name and not spawn_disabled and \
-			not animation_hit.is_playing():
+			not animation_hit.is_playing() and Globals.is_block_hit_available:
+		Globals.toggle_block_hit_available()
 		body.hit_by_block.emit()
 		animation_hit.play("hit")
 		_spawn_bonus()
 		await animation_hit.animation_finished
+		Globals.toggle_block_hit_available()
 		_disable()
 
 func _spawn_bonus():

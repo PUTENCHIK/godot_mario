@@ -16,6 +16,7 @@
 script = ExtResource("1_mpghw")
 
 [node name="Parallax2D" type="Parallax2D" parent="."]
+visible = false
 repeat_size = Vector2(640, 640)
 repeat_times = 4
 limit_begin = Vector2(0, 0)
@@ -79,6 +80,7 @@ position = Vector2(1248, 288)
 
 [node name="SurpriseBlock" parent="Static" instance=ExtResource("6_y0g2d")]
 position = Vector2(608, 544)
+red_mushroom_chance = 1.0
 
 [node name="Enemies" type="Node2D" parent="."]
 

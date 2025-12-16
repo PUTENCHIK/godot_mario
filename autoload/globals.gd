@@ -13,14 +13,17 @@ const MULTI_KILL_COEF = {
 }
 const COIN_REWARD = 200
 
+# Main variables
 var score: int = 0
 var extra_lives: int = START_EXTRA_LIVES
 var coins: int = 0
 
+# Supporting variables
 var random = RandomNumberGenerator.new()
 var is_game_over: bool = false
 var is_level_reloading: bool = false
 var multi_kill: int = 0
+var is_block_hit_available: bool = true
 
 signal game_over
 signal restart_level
@@ -45,6 +48,9 @@ func add_score(value: int):
 
 func add_coins(value: int):
 	coins += value
+
+func toggle_block_hit_available():
+	is_block_hit_available = not is_block_hit_available
 
 func pause():
 	get_tree().set_pause(true)

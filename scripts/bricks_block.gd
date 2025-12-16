@@ -16,10 +16,14 @@ func _ready() -> void:
 		print("[WARN] Chances into Bricks Block are greater than 1")
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body is CharacterBody2D and "Character" in body.name and not animation.is_playing():
+	if body is CharacterBody2D and "Character" in body.name and \
+			not animation.is_playing() and Globals.is_block_hit_available:
+		Globals.toggle_block_hit_available()
 		body.hit_by_block.emit()
 		animation.play("hit")
 		_try_spawn_coin()
+		await animation.animation_finished
+		Globals.toggle_block_hit_available()
 
 func _try_spawn_coin():
 	if not spawn_disabled:
