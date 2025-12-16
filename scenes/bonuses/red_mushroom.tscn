@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://dtutxxo2b6c38"]
 
-[ext_resource type="Script" uid="uid://co6gsykvaxbo8" path="res://scripts/red_mashroom.gd" id="1_3fmdd"]
-[ext_resource type="Texture2D" uid="uid://c1j4vhc654558" path="res://assets/bonuses/red_mashroom.png" id="1_q62dt"]
+[ext_resource type="Script" uid="uid://co6gsykvaxbo8" path="res://scripts/red_mashroom.gd" id="1_us3pn"]
+[ext_resource type="Texture2D" uid="uid://c1j4vhc654558" path="res://assets/bonuses/red_mashroom.png" id="2_nauxg"]
 
 [sub_resource type="Animation" id="Animation_3fmdd"]
 length = 0.001
@@ -66,14 +66,13 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3fmdd"]
 size = Vector2(64, 64)
 
-[node name="RedMashroom" type="CharacterBody2D"]
-z_index = -1
+[node name="RedMushroom" type="CharacterBody2D"]
 collision_layer = 16
 collision_mask = 29
-script = ExtResource("1_3fmdd")
+script = ExtResource("1_us3pn")
 
 [node name="RedMashroomSprite" type="Sprite2D" parent="."]
-texture = ExtResource("1_q62dt")
+texture = ExtResource("2_nauxg")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

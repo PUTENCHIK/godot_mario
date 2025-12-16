@@ -1,0 +1,83 @@
+[gd_scene load_steps=7 format=3 uid="uid://dgli2vjgy1lvv"]
+
+[ext_resource type="Script" uid="uid://cn8knan4xa7py" path="res://scripts/green_mashroom.gd" id="1_yqnj6"]
+[ext_resource type="Texture2D" uid="uid://blwf24la6txu1" path="res://assets/bonuses/green_mashroom.png" id="2_8rl2t"]
+
+[sub_resource type="Animation" id="Animation_15u61"]
+resource_name = "appear"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -64), Vector2(0, -64)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -64), Vector2(0, -64)]
+}
+
+[sub_resource type="Animation" id="Animation_fdahv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jwrq2"]
+_data = {
+&"RESET": SubResource("Animation_fdahv"),
+&"appear": SubResource("Animation_15u61")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fdahv"]
+size = Vector2(64, 64)
+
+[node name="GreenMushroom" type="CharacterBody2D"]
+collision_layer = 16
+collision_mask = 29
+script = ExtResource("1_yqnj6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_8rl2t")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_jwrq2")
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_fdahv")

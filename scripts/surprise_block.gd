@@ -1,6 +1,7 @@
 extends StaticBody2D
 
-@export var red_mushroom_chance: float = 0.2
+@export var red_mushroom_chance: float = 0.1
+@export var green_mushroom_chance: float = 0.1
 # other bonuses
 # Other chances that single coin will be spawned
 
@@ -8,13 +9,14 @@ extends StaticBody2D
 @onready var animation_state: AnimationPlayer = $AnimationState
 @onready var animation_hit: AnimationPlayer = $AnimationHit
 @onready var hit_area_collision: CollisionShape2D = $SurpriseBlockHitArea/HitCollision
-@onready var red_mashroom_scene: PackedScene = preload("res://scenes/bonuses/red_mashroom.tscn")
+@onready var red_mushroom_scene: PackedScene = preload("res://scenes/bonuses/red_mashroom.tscn")
+@onready var green_mushroom_scene: PackedScene = preload("res://scenes/bonuses/green_mashroom.tscn")
 @onready var jumping_coin_scene: PackedScene = preload("res://scenes/ui/jumping_coin.tscn")
 
 var spawn_disabled: bool = false
 
 func _ready() -> void:
-	if 1 - red_mushroom_chance < 0:
+	if 1 - red_mushroom_chance - green_mushroom_chance < 0:
 		print("[WARN] Chances into Surprise Block are greater than 1")
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
@@ -34,8 +36,9 @@ func _spawn_bonus():
 		var chance = randf()
 		# Bonus
 		if chance >= 1 - red_mushroom_chance:
-			spawn_disabled = true
 			_spawn_red_mushroom()
+		elif chance >= 1 - red_mushroom_chance - green_mushroom_chance:
+			_spawn_green_mushroom()
 		# Single coin
 		else:
 			_spawn_coin()
@@ -46,7 +49,12 @@ func _spawn_coin():
 	coin.global_position = global_position
 
 func _spawn_red_mushroom():
-	var bonus = red_mashroom_scene.instantiate()
+	var bonus = red_mushroom_scene.instantiate()
+	get_parent().add_child(bonus)
+	bonus.global_position = global_position
+
+func _spawn_green_mushroom():
+	var bonus = green_mushroom_scene.instantiate()
 	get_parent().add_child(bonus)
 	bonus.global_position = global_position
 

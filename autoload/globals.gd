@@ -35,6 +35,9 @@ signal level_finished
 func _ready() -> void:
 	game_over.connect(_on_game_over)
 
+func increase_extra_lives():
+	extra_lives += 1
+
 func reset_multi_kill():
 	multi_kill = 0
 
