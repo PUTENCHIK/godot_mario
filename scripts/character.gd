@@ -94,6 +94,8 @@ func handle_collisions():
 					jump_from_enemy = true
 			elif "RedMashroom" in collider.name:
 				collider.eaten.emit()
+			elif "PickableCoin" in collider.name:
+				collider.taken.emit()
 
 func _physics_process(delta: float) -> void:
 	match current_state:

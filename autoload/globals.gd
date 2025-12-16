@@ -11,6 +11,7 @@ const MULTI_KILL_COEF = {
 	3: 4,
 	4: 8
 }
+const COIN_REWARD = 200
 
 var score: int = 0
 var extra_lives: int = START_EXTRA_LIVES
@@ -41,6 +42,9 @@ func add_score(value: int):
 	value = value * MULTI_KILL_COEF[multi_kill]
 	score += value
 	return value
+
+func add_coins(value: int):
+	coins += value
 
 func pause():
 	get_tree().set_pause(true)

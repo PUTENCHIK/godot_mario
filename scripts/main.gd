@@ -99,7 +99,6 @@ func generate_clouds(parent: Node2D):
 	var global_x = randi_range(MIN_X, MAX_X)
 	var clouds = []
 	while global_x < map_size.x and clouds.size() <= MAX_CLOUDS:
-		print(global_x)
 		var sprite = Sprite2D.new()
 		var texture: Texture
 		if randf() <= 1 - DOUBLE_CLOUD_CHANCE:
@@ -134,7 +133,6 @@ func _on_restart_level():
 	character_to_spawn()
 	limit_character_camera()
 	set_menu_size()
-	generate_decorations()
 
 func _on_level_finished():
 	load_character()

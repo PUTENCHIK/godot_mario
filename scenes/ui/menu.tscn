@@ -37,6 +37,9 @@ alignment = 1
 [node name="PauseLabel" type="Label" parent="Panel/CenterContainer/MarginContainer/Main"]
 layout_mode = 2
 theme = ExtResource("1_yqeox")
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
 text = "PAUSE"
 horizontal_alignment = 1
 
@@ -50,6 +53,9 @@ layout_mode = 2
 [node name="Label" type="Label" parent="Panel/CenterContainer/MarginContainer/Main/Content/HBoxContainer"]
 layout_mode = 2
 theme = ExtResource("1_yqeox")
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 18
 text = "Show FPS:"
 
