@@ -95,6 +95,19 @@ func update_flip():
 	if direction != 0:
 		sprite.flip_h = velocity.x < 0
 
+func handle_enemy_collision(enemy: CharacterBody2D, normal: Vector2):
+	if abs(normal.x) > 0.5:
+		Globals.game_over.emit()
+	elif abs(normal.y) > 0.5:
+		if global_position.y < enemy.global_position.y:
+			enemy.hit_by_character.emit()
+			velocity.y = JUMP_VELOCITY
+			jump_from_enemy = true
+		else:
+			Globals.game_over.emit()
+	else:
+		print("[WARN] Character didn't handle collision with %s" % [enemy.name])
+
 func handle_collisions():
 	var collision_count = get_slide_collision_count()
 	for c in collision_count:
@@ -103,12 +116,7 @@ func handle_collisions():
 		var normal = slide_collision.get_normal()
 		if collider:
 			if "Enemy" in collider.name:
-				if abs(normal.x) > 0.5:
-					Globals.game_over.emit()
-				elif normal.y < -0.5:
-					collider.hit_by_character.emit()
-					velocity.y = JUMP_VELOCITY
-					jump_from_enemy = true
+				handle_enemy_collision(collider, normal)
 			elif "RedMushroom" in collider.name:
 				collider.eaten.emit()
 			elif "GreenMushroom" in collider.name:

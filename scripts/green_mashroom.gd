@@ -26,7 +26,9 @@ func handle_collisions():
 		var coll = get_slide_collision(c)
 		var collider = coll.get_collider()
 		var normal = coll.get_normal()
-		if collider.name != "Character":
+		if collider.name == "Character":
+			eaten.emit()
+		else:
 			if abs(normal.x) == 1:
 				velocity.x -= Globals.get_dir_coef(direction) * 2 * SPEED
 				direction = not direction

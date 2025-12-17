@@ -51,7 +51,9 @@ func handle_collisions():
 		var collider = coll.get_collider()
 		var normal = coll.get_normal()
 		if collider:
-			if collider.name != "Character":
+			if collider.name == "Character":
+				collider.handle_enemy_collision(self, normal)
+			else:
 				if abs(normal.x) == 1:
 					velocity.x -= get_dir_coef() * 2 * SPEED
 					direction = not direction
