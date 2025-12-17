@@ -71,7 +71,7 @@ size = Vector2(64, 64)
 size = Vector2(64, 1)
 
 [node name="BricksBlock" type="StaticBody2D"]
-collision_mask = 15
+collision_mask = 143
 script = ExtResource("1_70sxy")
 
 [node name="CoinNode" type="Node2D" parent="."]
