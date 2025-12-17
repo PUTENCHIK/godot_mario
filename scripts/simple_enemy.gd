@@ -16,9 +16,9 @@ var SPEED: float = BASE_SPEED - SPEED_DELTA + Globals.random.randf_range(0, 2*SP
 var current_state: State
 # false - left, true - right
 @export var direction: bool
-var is_dead: bool = false
 
-signal dead
+signal hit_by_character
+signal hit_by_fireball(fireball_direction: bool)
 
 func get_dir_coef():
 	return 1 if direction else -1
@@ -28,7 +28,8 @@ func set_state(state: State):
 
 func _ready() -> void:
 	set_state(State.WALK)
-	dead.connect(_on_dead)
+	hit_by_character.connect(_on_hit_by_character)
+	hit_by_fireball.connect(_on_hit_by_fireball)
 	Globals.character_start_rebirth.connect(_on_character_died)
 	Globals.character_end_rebirth.connect(_on_character_resurrected)
 
@@ -72,12 +73,19 @@ func _physics_process(delta: float) -> void:
 		update_flip()
 		move_and_slide()
 
-func _on_dead():
+func _on_hit_by_character():
+	_on_dead("crushed")
+
+func _on_hit_by_fireball(fireball_direction: bool):
+	_on_dead("blow_up_right" if fireball_direction else "blow_up_left")
+
+func _on_dead(animation_name: String):
 	if current_state != State.DEAD:
 		set_state(State.DEAD)
 		SPEED = 0
 		collision.disabled = true
-		animation.play("dead")
+		animation.play(animation_name)
+		update_flip()
 		Globals.increase_multi_kill()
 		var reward_label: Node2D = reward_label_scene.instantiate()
 		reward_label.score = SCORE_REWARD

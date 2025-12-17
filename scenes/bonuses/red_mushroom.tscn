@@ -68,7 +68,7 @@ size = Vector2(64, 64)
 
 [node name="RedMushroom" type="CharacterBody2D"]
 collision_layer = 16
-collision_mask = 29
+collision_mask = 157
 script = ExtResource("1_us3pn")
 
 [node name="RedMashroomSprite" type="Sprite2D" parent="."]

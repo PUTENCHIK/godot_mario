@@ -1,7 +1,6 @@
 extends StaticBody2D
 
-const MULTIPLE_COINS_AMOUNT = 5
-
+@export var multiple_coins_amount = 5
 @export var multiple_coin_chance: float = 0.1
 
 @onready var animation: AnimationPlayer = $AnimationPlayer
@@ -16,7 +15,7 @@ func _ready() -> void:
 		print("[WARN] Chances into Bricks Block are greater than 1")
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body is CharacterBody2D and "Character" in body.name and \
+	if body is CharacterBody2D and body.name == "Character" and \
 			not animation.is_playing() and Globals.is_block_hit_available:
 		Globals.toggle_block_hit_available()
 		body.hit_by_block.emit()
@@ -28,7 +27,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 func _try_spawn_coin():
 	if not spawn_disabled:
 		if coins_spawned > 0:
-			if coins_spawned == MULTIPLE_COINS_AMOUNT:
+			if coins_spawned == multiple_coins_amount:
 				spawn_disabled = true
 				return
 			_spawn_coin()

@@ -20,9 +20,6 @@ func _ready() -> void:
 	animation.animation_finished.connect(_on_appear_animation_finished)
 	eaten.connect(_on_eaten)
 
-func get_dir_coef():
-	return 1 if direction else -1
-
 func handle_collisions():
 	var collision_count = get_slide_collision_count()
 	for c in collision_count:
@@ -31,7 +28,7 @@ func handle_collisions():
 		var normal = coll.get_normal()
 		if collider.name != "Character":
 			if abs(normal.x) == 1:
-				velocity.x -= get_dir_coef() * 2 * SPEED
+				velocity.x -= Globals.get_dir_coef(direction) * 2 * SPEED
 				direction = not direction
 
 func _physics_process(delta: float) -> void:
@@ -39,7 +36,7 @@ func _physics_process(delta: float) -> void:
 		if not is_on_floor():
 			velocity.y += GRAVITY
 		
-		velocity.x = get_dir_coef() * SPEED
+		velocity.x = Globals.get_dir_coef(direction) * SPEED
 		handle_collisions()
 		move_and_slide()
 

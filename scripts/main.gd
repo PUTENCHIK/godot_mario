@@ -38,6 +38,8 @@ func load_character():
 	character = character_scene.instantiate()
 	camera = character.get_node("CharacterCamera")
 	world.add_child(character)
+	await character.tree_exited
+	character.name = "Character"
 
 func load_level(level_name: String):
 	if current_level:

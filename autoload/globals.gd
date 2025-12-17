@@ -31,9 +31,13 @@ signal character_start_rebirth
 signal character_end_rebirth
 
 signal level_finished
+signal sunflower_eaten
 
 func _ready() -> void:
 	game_over.connect(_on_game_over)
+
+func get_dir_coef(direction: bool):
+	return 1 if direction else -1
 
 func increase_extra_lives():
 	extra_lives += 1

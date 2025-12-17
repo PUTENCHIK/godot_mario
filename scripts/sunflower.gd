@@ -4,7 +4,8 @@ const SPEED = 250.0
 const GRAVITY = 75.0
 const SCORE_REWARD = 1000
 
-@onready var animation: AnimationPlayer = $AnimationPlayer
+@onready var blink_animation: AnimationPlayer = $BlinkAnimation
+@onready var appear_animation: AnimationPlayer = $AppearAnimation
 @onready var collision: CollisionShape2D = $CollisionShape2D
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var reward_label_scene: PackedScene = preload("res://scenes/ui/reward_label.tscn")
@@ -16,8 +17,9 @@ var is_eaten: bool = false
 signal eaten
 
 func _ready() -> void:
-	animation.play("appear")
-	animation.animation_finished.connect(_on_appear_animation_finished)
+	blink_animation.play("blink")
+	appear_animation.play("appear")
+	appear_animation.animation_finished.connect(_on_appear_animation_finished)
 	eaten.connect(_on_eaten)
 
 func handle_collisions():
@@ -46,7 +48,7 @@ func _on_appear_animation_finished(empty):
 func _on_eaten():
 	if not is_eaten:
 		is_eaten = true
-		Globals.increase_extra_lives()
+		Globals.sunflower_eaten.emit()
 		var reward_label: Node2D = reward_label_scene.instantiate()
 		reward_label.score = SCORE_REWARD
 		get_parent().add_child(reward_label)

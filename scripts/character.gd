@@ -5,17 +5,20 @@ const JUMP_VELOCITY = -600.0
 const JUMP_EXTRA_VELOCITY = -55.0
 const GRAVITY = 3200.0
 const MAX_JUMP_TIME = 1.0
+const SHOOTING_INTERVAL = 0.4
 
 enum State {IDLE, RUN, JUMP, DEAD}
 
 @onready var animation = $AnimationPlayer
 @onready var sprite = $CharacterSprite
 @onready var collision = $CharacterCollision
-@onready var reward_label_scene: PackedScene = preload("res://scenes/ui/reward_label.tscn")
+@onready var fireball_scene: PackedScene = preload("res://scenes/other/fireball.tscn")
 
 var current_state: State = State.IDLE
 var jump_timer: float = 0.0
 var jump_from_enemy: bool = false
+var is_shooting_enable: bool = false
+var shooting_timer: float = 0.0
 
 signal hit_by_block
 signal hit_by_enemy
@@ -30,6 +33,20 @@ func _ready() -> void:
 	hit_by_block.connect(_on_hit_by_block)
 	hit_by_enemy.connect(_on_hit_by_enemy)
 	Globals.game_over.connect(_on_hit_by_enemy)
+	Globals.sunflower_eaten.connect(_on_sunflower_eaten)
+
+func _input(event: InputEvent) -> void:
+	if is_shooting_enable and event.is_action_pressed("shoot") and \
+			shooting_timer >= SHOOTING_INTERVAL and Globals.coins > 0:
+		var fireball: CharacterBody2D = fireball_scene.instantiate()
+		fireball.direction = not sprite.flip_h
+		get_parent().add_child(fireball)
+		fireball.global_position = global_position
+		fireball.global_position.x += (-1 if sprite.flip_h else 1) * 32
+		fireball.velocity.y -= 400
+		
+		shooting_timer = 0.0
+		Globals.coins -= 1
 
 func handle_idle():
 	animation.play("idle")
@@ -89,12 +106,14 @@ func handle_collisions():
 				if abs(normal.x) > 0.5:
 					Globals.game_over.emit()
 				elif normal.y < -0.5:
-					collider.dead.emit()
+					collider.hit_by_character.emit()
 					velocity.y = JUMP_VELOCITY
 					jump_from_enemy = true
-			elif "RedMashroom" in collider.name:
+			elif "RedMushroom" in collider.name:
 				collider.eaten.emit()
-			elif "GreenMashroom" in collider.name:
+			elif "GreenMushroom" in collider.name:
+				collider.eaten.emit()
+			elif "Sunflower" in collider.name:
 				collider.eaten.emit()
 			elif "PickableCoin" in collider.name:
 				collider.taken.emit()
@@ -118,6 +137,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 	jump_timer += delta
+	shooting_timer += delta
 	
 	if is_on_floor() and current_state != State.JUMP:
 		Globals.reset_multi_kill()
@@ -141,3 +161,7 @@ func _on_hit_by_enemy():
 	animation.play("dead")
 	await animation.animation_finished
 	process_mode = Node.PROCESS_MODE_INHERIT
+
+func _on_sunflower_eaten():
+	is_shooting_enable = true
+	shooting_timer = SHOOTING_INTERVAL
