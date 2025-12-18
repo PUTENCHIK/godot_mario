@@ -43,14 +43,14 @@ theme_override_constants/shadow_offset_y = 2
 text = "PAUSE"
 horizontal_alignment = 1
 
-[node name="Content" type="VBoxContainer" parent="Panel/CenterContainer/MarginContainer/Main"]
+[node name="Settings" type="VBoxContainer" parent="Panel/CenterContainer/MarginContainer/Main"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 8
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/CenterContainer/MarginContainer/Main/Content"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/CenterContainer/MarginContainer/Main/Settings"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/CenterContainer/MarginContainer/Main/Content/HBoxContainer"]
+[node name="Label" type="Label" parent="Panel/CenterContainer/MarginContainer/Main/Settings/HBoxContainer"]
 layout_mode = 2
 theme = ExtResource("1_yqeox")
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
@@ -59,22 +59,44 @@ theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 18
 text = "Show FPS:"
 
-[node name="CheckButton" type="CheckButton" parent="Panel/CenterContainer/MarginContainer/Main/Content/HBoxContainer"]
+[node name="CheckButton" type="CheckButton" parent="Panel/CenterContainer/MarginContainer/Main/Settings/HBoxContainer"]
 layout_mode = 2
 button_pressed = true
 
-[node name="ResumeButton" type="Button" parent="Panel/CenterContainer/MarginContainer/Main/Content"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/CenterContainer/MarginContainer/Main/Settings"]
+layout_mode = 2
+
+[node name="FontsLabel" type="Label" parent="Panel/CenterContainer/MarginContainer/Main/Settings/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_yqeox")
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 18
+text = "Font:"
+
+[node name="FontsOptionButton" type="OptionButton" parent="Panel/CenterContainer/MarginContainer/Main/Settings/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_yqeox")
+theme_override_font_sizes/font_size = 18
+
+[node name="Buttons" type="VBoxContainer" parent="Panel/CenterContainer/MarginContainer/Main"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ResumeButton" type="Button" parent="Panel/CenterContainer/MarginContainer/Main/Buttons"]
 layout_mode = 2
 theme = ExtResource("1_yqeox")
 theme_override_font_sizes/font_size = 18
 text = "Resume"
 
-[node name="ExitButton" type="Button" parent="Panel/CenterContainer/MarginContainer/Main/Content"]
+[node name="ExitButton" type="Button" parent="Panel/CenterContainer/MarginContainer/Main/Buttons"]
 layout_mode = 2
 theme = ExtResource("1_yqeox")
 theme_override_font_sizes/font_size = 18
 text = "Exit"
 
-[connection signal="toggled" from="Panel/CenterContainer/MarginContainer/Main/Content/HBoxContainer/CheckButton" to="." method="_on_check_button_toggled"]
-[connection signal="pressed" from="Panel/CenterContainer/MarginContainer/Main/Content/ResumeButton" to="." method="_resume_game"]
-[connection signal="pressed" from="Panel/CenterContainer/MarginContainer/Main/Content/ExitButton" to="." method="_exit_game"]
+[connection signal="toggled" from="Panel/CenterContainer/MarginContainer/Main/Settings/HBoxContainer/CheckButton" to="." method="_on_check_button_toggled"]
+[connection signal="item_selected" from="Panel/CenterContainer/MarginContainer/Main/Settings/VBoxContainer/FontsOptionButton" to="." method="_on_font_changed"]
+[connection signal="pressed" from="Panel/CenterContainer/MarginContainer/Main/Buttons/ResumeButton" to="." method="_resume_game"]
+[connection signal="pressed" from="Panel/CenterContainer/MarginContainer/Main/Buttons/ExitButton" to="." method="_exit_game"]
