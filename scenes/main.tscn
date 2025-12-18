@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dyj0wmxkcqanb"]
+[gd_scene load_steps=6 format=3 uid="uid://dyj0wmxkcqanb"]
 
 [ext_resource type="Script" uid="uid://cg307ngxmj8xf" path="res://scripts/main.gd" id="1_sugp2"]
 [ext_resource type="PackedScene" uid="uid://cij2lb2l0tw0a" path="res://scenes/ui/game_info.tscn" id="2_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://dbrpvv01xqhmr" path="res://scenes/ui/menu.tscn" id="2_sugp2"]
+[ext_resource type="Theme" uid="uid://6fqxqvibi1ml" path="res://resources/main_theme.tres" id="3_tbgi4"]
 [ext_resource type="Script" uid="uid://bhrx6m4v3s7sb" path="res://scripts/show_fps.gd" id="11_ya4ey"]
 
 [node name="Main" type="Node2D"]
@@ -17,6 +18,9 @@ script = ExtResource("1_sugp2")
 [node name="Show FPS" type="Label" parent="UI"]
 offset_right = 40.0
 offset_bottom = 23.0
+theme = ExtResource("3_tbgi4")
+theme_override_font_sizes/font_size = 14
+text = "60 fps"
 script = ExtResource("11_ya4ey")
 
 [node name="Menu" parent="UI" instance=ExtResource("2_sugp2")]
