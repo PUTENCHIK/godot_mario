@@ -48,6 +48,7 @@ func _on_appear_animation_finished(empty):
 func _on_eaten():
 	if not is_eaten:
 		is_eaten = true
+		Globals.red_mushroom_eaten.emit()
 		var reward_label: Node2D = reward_label_scene.instantiate()
 		reward_label.score = SCORE_REWARD
 		get_parent().add_child(reward_label)

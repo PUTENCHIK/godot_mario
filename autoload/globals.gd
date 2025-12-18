@@ -31,7 +31,9 @@ signal character_start_rebirth
 signal character_end_rebirth
 
 signal level_finished
+signal red_mushroom_eaten
 signal sunflower_eaten
+signal clear_bonuses
 
 func _ready() -> void:
 	game_over.connect(_on_game_over)

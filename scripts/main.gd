@@ -40,6 +40,7 @@ func load_character():
 	world.add_child(character)
 	await character.tree_exited
 	character.name = "Character"
+	Globals.clear_bonuses.emit()
 
 func load_level(level_name: String):
 	if current_level:
