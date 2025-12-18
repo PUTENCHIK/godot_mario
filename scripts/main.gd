@@ -130,6 +130,7 @@ func generate_decorations():
 
 func _on_toggle_show_fps(toggle_on: bool):
 	show_fps.visible = toggle_on
+	Settings.current_show_fps = toggle_on
 
 func _on_restart_level():
 	load_character()
@@ -144,3 +145,9 @@ func _on_level_finished():
 	limit_character_camera()
 	set_menu_size()
 	generate_decorations()
+
+func _load_settings() -> void:
+	Settings.load_settings()
+
+func _save_settings() -> void:
+	Settings.save_settings()
