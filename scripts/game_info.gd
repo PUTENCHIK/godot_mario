@@ -64,9 +64,9 @@ func _on_character_died(freeze_time: bool):
 func _on_character_resurrected(zero_time: bool):
 	decrease_time = true
 	if zero_time:
-		time_left = Globals.TIME_ON_LEVEL
+		zero_timer()
 
-func _on_level_finished():
+func _on_level_finished(destination: String):
 	zero_timer()
 
 func _add_display_bonus(bonus_name: String):

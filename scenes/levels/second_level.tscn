@@ -21,7 +21,6 @@ size = Vector2(103, 43)
 script = ExtResource("1_kwjvk")
 
 [node name="Parallax2D" type="Parallax2D" parent="."]
-visible = false
 repeat_size = Vector2(640, 640)
 repeat_times = 2
 limit_begin = Vector2(0, 0)
@@ -130,10 +129,11 @@ position = Vector2(6848, 480)
 position = Vector2(7104, 480)
 
 [node name="Spawn" type="Marker2D" parent="."]
-position = Vector2(3872, 512)
+position = Vector2(7328, 608)
 
 [node name="FinishBigCastle" parent="." instance=ExtResource("7_yl28m")]
 position = Vector2(7819, 383)
+is_final = true
 
 [node name="SpecialCloud" type="StaticBody2D" parent="."]
 z_index = 3

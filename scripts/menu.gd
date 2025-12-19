@@ -7,9 +7,10 @@ extends Node
 func _ready() -> void:
 	content.visible = false
 	Settings.update_menu_elements.connect(_update_menu_elements)
+	Globals.set_menu_size($Panel/CenterContainer)
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("menu"):
+	if event.is_action_pressed("menu") and Globals.is_menu_available:
 		if content.visible:
 			_resume_game()
 		else:

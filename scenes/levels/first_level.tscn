@@ -144,12 +144,13 @@ direction = true
 position = Vector2(1152, 192)
 
 [node name="SimpleEnemy6" parent="Enemies" instance=ExtResource("7_2ubv2")]
-position = Vector2(1056, 192)
+position = Vector2(256, 704)
 
 [node name="Spawn" type="Marker2D" parent="."]
 position = Vector2(96, 672)
 
 [node name="LevelFinish" parent="." instance=ExtResource("9_4ooow")]
 position = Vector2(5031, 593)
+destination = "Second"
 
 [connection signal="body_entered" from="DeathArea" to="DeathArea" method="_on_body_entered"]

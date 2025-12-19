@@ -1,5 +1,7 @@
 extends Node2D
 
+@export var start_level: String = "Second"
+
 @onready var menu: Node = $UI/Menu
 @onready var character_scene = preload("res://scenes/living/character.tscn")
 @onready var world = $World
@@ -18,19 +20,18 @@ var character: CharacterBody2D = null
 var camera: Camera2D = null
 
 func _ready() -> void:
+	Settings.show_fps.connect(_on_toggle_show_fps)
 	Globals.restart_level.connect(_on_restart_level)
+	Globals.level_finished.connect(_on_level_finished)
+	
 	load_character()
 	if len(levels.keys()) == 0:
 		print("[ERROR] No levels")
 		return
-	load_level("Second")
+	load_level(start_level)
 	character_to_spawn()
 	limit_character_camera()
-	set_menu_size()
 	generate_decorations()
-	
-	Settings.show_fps.connect(_on_toggle_show_fps)
-	Globals.level_finished.connect(_on_level_finished)
 
 func load_character():
 	if character:
@@ -81,12 +82,6 @@ func limit_character_camera():
 	camera.limit_right = map_size.x
 	camera.limit_bottom = map_size.y
 
-func set_menu_size():
-	var window_size: Vector2i = DisplayServer.window_get_size()
-	var container: CenterContainer = menu.get_node("Panel/CenterContainer")
-	container.size.x = window_size.x
-	container.size.y = window_size.y
-
 func generate_clouds(parent: Node2D):
 	const DOUBLE_CLOUD_CHANCE = 0.3
 	const MAX_CLOUDS = 50
@@ -132,17 +127,22 @@ func _on_toggle_show_fps(toggle_on: bool):
 	show_fps.visible = toggle_on
 	Settings.current_show_fps = toggle_on
 
-func _on_restart_level():
+func _on_restart_level(full: bool):
 	load_character()
+	if full:
+		load_level(start_level)
 	character_to_spawn()
 	limit_character_camera()
-	set_menu_size()
+	if full:
+		generate_decorations()
+	Globals.resume()
 
-func _on_level_finished():
-	load_level("Second")
+func _on_level_finished(destination: String):
+	if destination not in levels:
+		print("[ERROR] %s is not in levels" % [destination])
+	load_level(destination)
 	character_to_spawn()
 	limit_character_camera()
-	set_menu_size()
 	generate_decorations()
 
 func _load_settings() -> void:
