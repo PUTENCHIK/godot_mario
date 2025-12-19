@@ -1,8 +1,8 @@
 extends Node
 
 const DELAY_AFTER_DEATH = 2.0
-const TIME_ON_LEVEL = 100
-const START_EXTRA_LIVES = 1
+const TIME_ON_LEVEL = 200
+const START_EXTRA_LIVES = 3
 const MAX_MULTI_KILL = 4
 const MULTI_KILL_COEF = {
 	0: 1,

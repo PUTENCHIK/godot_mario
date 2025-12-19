@@ -7,6 +7,7 @@ const SCORE_REWARD = Globals.COIN_REWARD
 @onready var collision: CollisionShape2D = $CollisionShape2D
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var reward_label_scene: PackedScene = preload("res://scenes/ui/reward_label.tscn")
+@onready var drop_player: AudioStreamPlayer2D = $DropPlayer
 
 var is_taken: bool = false
 
@@ -26,6 +27,7 @@ func _on_taken():
 	if not is_taken:
 		is_taken = true
 		Globals.add_coins(1)
+		drop_player.play()
 		var reward_label: Node2D = reward_label_scene.instantiate()
 		reward_label.score = SCORE_REWARD
 		get_parent().add_child(reward_label)
@@ -33,4 +35,5 @@ func _on_taken():
 		sprite.visible = false
 		collision.disabled = true
 		await reward_label.animation.animation_finished
+		await drop_player.finished
 		queue_free()

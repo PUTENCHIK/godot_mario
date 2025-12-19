@@ -9,6 +9,8 @@ const SCORE_REWARD = 1000
 @onready var collision: CollisionShape2D = $CollisionShape2D
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var reward_label_scene: PackedScene = preload("res://scenes/ui/reward_label.tscn")
+@onready var spawn_player: AudioStreamPlayer2D = $SpawnPlayer
+@onready var eat_player: AudioStreamPlayer2D = $EatPlayer
 
 var animation_finished: bool = false
 var direction: bool = true
@@ -19,6 +21,7 @@ signal eaten
 func _ready() -> void:
 	blink_animation.play("blink")
 	appear_animation.play("appear")
+	spawn_player.play()
 	appear_animation.animation_finished.connect(_on_appear_animation_finished)
 	eaten.connect(_on_eaten)
 
@@ -50,6 +53,7 @@ func _on_appear_animation_finished(empty):
 func _on_eaten():
 	if not is_eaten:
 		is_eaten = true
+		eat_player.play()
 		Globals.sunflower_eaten.emit()
 		var reward_label: Node2D = reward_label_scene.instantiate()
 		reward_label.score = SCORE_REWARD

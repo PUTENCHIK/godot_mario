@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://ma228mriiyji"]
+[gd_scene load_steps=14 format=3 uid="uid://ma228mriiyji"]
 
 [ext_resource type="Script" uid="uid://dig18bl1o8did" path="res://scripts/surprise_block.gd" id="1_od2x7"]
 [ext_resource type="Texture2D" uid="uid://bfik6bm2alxo8" path="res://assets/tiles/surprise.png" id="2_od2x7"]
 [ext_resource type="Texture2D" uid="uid://dekhars522a" path="res://assets/tiles/disabled_block.png" id="3_831c8"]
+[ext_resource type="AudioStream" uid="uid://dhqg1nxir6iky" path="res://audio/sounds/block_hit.wav" id="4_7ms58"]
 
 [sub_resource type="Animation" id="Animation_6o6qa"]
 length = 0.001
@@ -229,5 +230,11 @@ collision_mask = 28
 position = Vector2(0, 32.5)
 shape = SubResource("RectangleShape2D_6o6qa")
 debug_color = Color(0.71920705, 0.38138023, 0.7546973, 0.41960785)
+
+[node name="HitPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_7ms58")
+volume_db = -8.0
+pitch_scale = 1.4
+bus = &"Sounds"
 
 [connection signal="body_entered" from="SurpriseBlockHitArea" to="." method="_on_area_2d_body_entered"]

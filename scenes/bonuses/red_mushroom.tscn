@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dtutxxo2b6c38"]
+[gd_scene load_steps=9 format=3 uid="uid://dtutxxo2b6c38"]
 
 [ext_resource type="Script" uid="uid://co6gsykvaxbo8" path="res://scripts/red_mashroom.gd" id="1_us3pn"]
 [ext_resource type="Texture2D" uid="uid://c1j4vhc654558" path="res://assets/bonuses/red_mushroom.png" id="2_nauxg"]
+[ext_resource type="AudioStream" uid="uid://15lkvdqhccd7" path="res://audio/sounds/bonus_spawned.wav" id="3_nauxg"]
+[ext_resource type="AudioStream" uid="uid://rifryuikb8qi" path="res://audio/sounds/bonus_eaten.wav" id="4_itv02"]
 
 [sub_resource type="Animation" id="Animation_3fmdd"]
 length = 0.001
@@ -81,3 +83,13 @@ libraries = {
 
 [node name="RedMashroomCollision" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_3fmdd")
+
+[node name="SpawnPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_nauxg")
+volume_db = -10.0
+bus = &"Sounds"
+
+[node name="EatPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_itv02")
+volume_db = -5.0
+bus = &"Sounds"

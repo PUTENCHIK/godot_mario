@@ -7,6 +7,8 @@ const JUMP_VELOCITY = 40000
 @onready var animation: AnimationPlayer = $AnimationPlayer
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var collision: CollisionShape2D = $CollisionShape2D
+@onready var explosion_player: AudioStreamPlayer2D = $ExplosionPlayer
+@onready var knock_player: AudioStreamPlayer2D = $KnockPlayer
 
 var direction: bool = true
 var is_disappeared: bool = false
@@ -43,6 +45,7 @@ func _physics_process(delta: float) -> void:
 			velocity.y += GRAVITY * delta
 		else:
 			velocity.y -= JUMP_VELOCITY * delta
+			knock_player.play()
 		
 		velocity.x = Globals.get_dir_coef(direction) * SPEED
 		
@@ -53,6 +56,7 @@ func _physics_process(delta: float) -> void:
 func disappear():
 	if not is_disappeared:
 		is_disappeared = true
+		explosion_player.play()
 		animation.play("disappear")
 		collision.disabled = true
 		await animation.animation_finished

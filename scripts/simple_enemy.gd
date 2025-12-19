@@ -9,6 +9,8 @@ const CHANGE_DIRECTION_INTERVAL = 0.1
 @onready var animation: AnimationPlayer = $AnimationPlayer
 @onready var sprite: Sprite2D = $SimpleEnemySprite
 @onready var collision: CollisionShape2D = $SimpleEnemyCollision
+@onready var dead_player: AudioStreamPlayer2D = $DeadPlayer
+@onready var meow_player: AudioStreamPlayer2D = $MeowPlayer
 
 @onready var reward_label_scene: PackedScene = preload("res://scenes/ui/reward_label.tscn")
 
@@ -20,6 +22,7 @@ var current_state: State
 @export var direction: bool
 var change_direction_timer: float = CHANGE_DIRECTION_INTERVAL
 
+signal kill_character
 signal hit_by_character
 signal hit_by_fireball(fireball_direction: bool)
 
@@ -31,6 +34,7 @@ func set_state(state: State):
 
 func _ready() -> void:
 	set_state(State.WALK)
+	kill_character.connect(_on_kill_character)
 	hit_by_character.connect(_on_hit_by_character)
 	hit_by_fireball.connect(_on_hit_by_fireball)
 	Globals.character_start_rebirth.connect(_on_character_died)
@@ -40,8 +44,7 @@ func handle_idle():
 	animation.play("idle")
 
 func handle_walk():
-	animation.play("walk")
-	
+	animation.play("walk")	
 	velocity.x = get_dir_coef() * SPEED
 
 func update_flip():
@@ -85,7 +88,12 @@ func _physics_process(delta: float) -> void:
 		
 		change_direction_timer += delta
 
+func _on_kill_character():
+	if not meow_player.playing:
+		meow_player.play()
+
 func _on_hit_by_character():
+	dead_player.play()
 	_on_dead("crushed")
 
 func _on_hit_by_fireball(fireball_direction: bool):

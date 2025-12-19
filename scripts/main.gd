@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var start_level: String = "Second"
+@export var start_level: String = "First"
 
 @onready var menu: Node = $UI/Menu
 @onready var character_scene = preload("res://scenes/living/character.tscn")
@@ -32,6 +32,7 @@ func _ready() -> void:
 	character_to_spawn()
 	limit_character_camera()
 	generate_decorations()
+	play_level_music()
 
 func load_character():
 	if character:
@@ -123,6 +124,13 @@ func generate_decorations():
 	if current_level.generate_bushes:
 		generate_bushes(decorations)
 
+func play_level_music():
+	if not current_level:
+		return
+	var audio: AudioStreamPlayer = current_level.get_node("Audio")
+	if not audio.playing:
+		audio.play()
+
 func _on_toggle_show_fps(toggle_on: bool):
 	show_fps.visible = toggle_on
 	Settings.current_show_fps = toggle_on
@@ -135,6 +143,8 @@ func _on_restart_level(full: bool):
 	limit_character_camera()
 	if full:
 		generate_decorations()
+	if full:
+		play_level_music()
 	Globals.resume()
 
 func _on_level_finished(destination: String):
@@ -144,6 +154,7 @@ func _on_level_finished(destination: String):
 	character_to_spawn()
 	limit_character_camera()
 	generate_decorations()
+	play_level_music()
 
 func _load_settings() -> void:
 	Settings.load_settings()

@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://oot6hxi5js6e"]
+[gd_scene load_steps=5 format=3 uid="uid://oot6hxi5js6e"]
 
 [ext_resource type="StyleBox" uid="uid://g2jcun3y34sm" path="res://resources/ui_style.tres" id="1_fu4wh"]
 [ext_resource type="Script" uid="uid://ctto0jwqtjwh8" path="res://scripts/game_over.gd" id="1_x6o8e"]
 [ext_resource type="Theme" uid="uid://6fqxqvibi1ml" path="res://resources/main_theme.tres" id="2_x6o8e"]
+[ext_resource type="AudioStream" uid="uid://gnriib4lf3o7" path="res://audio/music/game_over.mp3" id="4_vfrx6"]
 
 [node name="GameOver" type="Node"]
 process_mode = 2
@@ -68,6 +69,12 @@ layout_mode = 2
 theme = ExtResource("2_x6o8e")
 theme_override_font_sizes/font_size = 18
 text = "Exit"
+
+[node name="Audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_vfrx6")
+volume_db = -15.0
+bus = &"Music"
+parameters/looping = true
 
 [connection signal="pressed" from="Panel/CenterContainer/VBoxContainer/ButtonsBox/RestartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="Panel/CenterContainer/VBoxContainer/ButtonsBox/ExitButton" to="." method="_on_exit_button_pressed"]

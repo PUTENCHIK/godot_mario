@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://rjcjh7rnuqco"]
+[gd_scene load_steps=29 format=3 uid="uid://rjcjh7rnuqco"]
 
 [ext_resource type="Script" uid="uid://6h1h2hx2quo6" path="res://scripts/character.gd" id="1_04vni"]
 [ext_resource type="Texture2D" uid="uid://bf26npd3usfew" path="res://assets/character/idle.png" id="2_eag8c"]
@@ -9,6 +9,11 @@
 [ext_resource type="Texture2D" uid="uid://ma4kkdhoyuxn" path="res://assets/character/big_jump.png" id="5_mecw1"]
 [ext_resource type="Texture2D" uid="uid://uxulf42ajsfv" path="res://assets/character/big_dead.png" id="7_mj1me"]
 [ext_resource type="Texture2D" uid="uid://d30hd5a1wivyi" path="res://assets/character/big_run.png" id="8_krow1"]
+[ext_resource type="AudioStream" uid="uid://dchlqs7lpn8ru" path="res://audio/sounds/step_wood.wav" id="10_mecw1"]
+[ext_resource type="AudioStream" uid="uid://bfar7vppxjnqb" path="res://audio/sounds/jump.wav" id="11_2w06f"]
+[ext_resource type="AudioStream" uid="uid://btcaejhfqce4w" path="res://audio/sounds/landing.wav" id="12_8vfmb"]
+[ext_resource type="AudioStream" uid="uid://cpon3eu2j3dy8" path="res://audio/sounds/ouch.wav" id="13_6n3y7"]
+[ext_resource type="AudioStream" uid="uid://bbw1nfil1s8yo" path="res://audio/sounds/death.wav" id="14_m0g5g"]
 
 [sub_resource type="Animation" id="Animation_lrhn5"]
 length = 0.001
@@ -692,3 +697,31 @@ shape = SubResource("RectangleShape2D_dp8ca")
 [node name="CharacterCamera" type="Camera2D" parent="."]
 limit_left = 0
 limit_top = 0
+
+[node name="StepPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_mecw1")
+volume_db = -5.0
+bus = &"Sounds"
+
+[node name="JumpPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_2w06f")
+volume_db = -9.0
+bus = &"Sounds"
+
+[node name="LandingPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_8vfmb")
+volume_db = -18.0
+bus = &"Sounds"
+
+[node name="HitPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_6n3y7")
+volume_db = -12.0
+bus = &"Sounds"
+
+[node name="DeadPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_m0g5g")
+volume_db = -20.0
+bus = &"Sounds"
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+current = true

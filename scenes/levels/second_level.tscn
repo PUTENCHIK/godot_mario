@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://6ol0jj8rqccl"]
+[gd_scene load_steps=16 format=4 uid="uid://6ol0jj8rqccl"]
 
 [ext_resource type="Texture2D" uid="uid://cdp5og1mqnbar" path="res://assets/backgrounds/sky.png" id="1_eio8w"]
 [ext_resource type="Script" uid="uid://l8k8qehfuqpi" path="res://scripts/second_level.gd" id="1_kwjvk"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://b18e8tog4b6o0" path="res://scenes/blocks/secret_block.tscn" id="9_sxyf2"]
 [ext_resource type="PackedScene" uid="uid://b5vmyqfxs2boa" path="res://scenes/bonuses/pickable_coin.tscn" id="11_ogpjx"]
 [ext_resource type="Texture2D" uid="uid://b5070rs8weaiy" path="res://assets/backgrounds/cloud1.png" id="13_ogpjx"]
+[ext_resource type="AudioStream" uid="uid://dgdygapukxfdi" path="res://audio/music/second.mp3" id="14_oks6y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oks6y"]
 size = Vector2(103, 43)
@@ -129,7 +130,7 @@ position = Vector2(6848, 480)
 position = Vector2(7104, 480)
 
 [node name="Spawn" type="Marker2D" parent="."]
-position = Vector2(7328, 608)
+position = Vector2(96, 672)
 
 [node name="FinishBigCastle" parent="." instance=ExtResource("7_yl28m")]
 position = Vector2(7819, 383)
@@ -145,5 +146,11 @@ texture = ExtResource("13_ogpjx")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SpecialCloud"]
 position = Vector2(3070.5, 622)
 shape = SubResource("RectangleShape2D_oks6y")
+
+[node name="Audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_oks6y")
+volume_db = -20.0
+bus = &"Music"
+parameters/looping = true
 
 [connection signal="body_entered" from="DeathArea" to="DeathArea" method="_on_body_entered"]

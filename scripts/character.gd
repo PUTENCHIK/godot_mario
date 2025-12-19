@@ -16,6 +16,11 @@ enum State {IDLE, RUN, JUMP, DEAD}
 @onready var sprite = $CharacterSprite
 @onready var collision = $CharacterCollision
 @onready var fireball_scene: PackedScene = preload("res://scenes/other/fireball.tscn")
+@onready var step_player: AudioStreamPlayer = $StepPlayer
+@onready var jump_player: AudioStreamPlayer = $JumpPlayer
+@onready var landing_player: AudioStreamPlayer = $LandingPlayer
+@onready var hit_player: AudioStreamPlayer = $HitPlayer
+@onready var dead_player: AudioStreamPlayer = $DeadPlayer
 
 var current_state: State = State.IDLE
 var jump_timer: float = 0.0
@@ -93,6 +98,8 @@ func handle_idle():
 
 func handle_run():
 	play_animation("run")
+	if not step_player.playing:
+		step_player.play()
 	
 	var direction = Input.get_axis("left", "right")
 	if direction != 0:
@@ -115,6 +122,8 @@ func handle_jump():
 	if (Input.is_action_pressed("jump") and jump_timer < MAX_JUMP_TIME and
 			velocity.y <= 0 and not jump_from_enemy):
 		velocity.y += JUMP_EXTRA_VELOCITY * (1 - jump_timer / MAX_JUMP_TIME)
+		if not jump_player.playing:
+			jump_player.play()
 	# If 'jump' is released, then get extra jump velocity is impossible
 	if Input.is_action_just_released("jump"):
 		jump_timer += MAX_JUMP_TIME
@@ -127,6 +136,7 @@ func update_flip():
 func take_hit_by_enemy():
 	if is_big:
 		is_big = false
+		hit_player.play()
 		toggle_invulnerability.emit(true)
 		Globals.character_not_big_anymore.emit()
 	elif not is_invulnerable:
@@ -134,6 +144,7 @@ func take_hit_by_enemy():
 
 func handle_enemy_collision(enemy: CharacterBody2D, normal: Vector2):
 	if abs(normal.x) > 0.5:
+		enemy.kill_character.emit()
 		take_hit_by_enemy()
 	elif abs(normal.y) > 0.5:
 		if global_position.y < enemy.global_position.y:
@@ -141,6 +152,7 @@ func handle_enemy_collision(enemy: CharacterBody2D, normal: Vector2):
 			velocity.y = JUMP_VELOCITY
 			jump_from_enemy = true
 		else:
+			enemy.kill_character.emit()
 			take_hit_by_enemy()
 	else:
 		print("[WARN] Character didn't handle collision with %s" % [enemy.name])
@@ -206,6 +218,8 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor() and current_state != State.JUMP:
 		Globals.reset_multi_kill()
 	if is_on_floor() and current_state == State.JUMP:
+		if not landing_player.playing:
+			landing_player.play()
 		jump_from_enemy = false
 		set_state(State.RUN if abs(velocity.x) > 0 else State.IDLE)
 	if not is_on_floor() and current_state in [State.IDLE, State.RUN]:
@@ -220,6 +234,7 @@ func _on_hit_by_block():
 func _on_hit_by_enemy():
 	set_state(State.DEAD)
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	dead_player.play()
 	set_collision_mask_value(4, false)
 	velocity *= 0
 	play_animation("dead")
@@ -227,7 +242,9 @@ func _on_hit_by_enemy():
 	process_mode = Node.PROCESS_MODE_INHERIT
 
 func _on_red_mushroom_eaten():
-	is_big = true
+	if not is_big:
+		is_big = true
+		global_position.y -= 32
 
 func _on_sunflower_eaten():
 	is_shooting_enable = true

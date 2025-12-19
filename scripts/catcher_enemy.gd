@@ -5,6 +5,7 @@ extends StaticBody2D
 
 @onready var hit_animation: AnimationPlayer = $AnimationHit
 @onready var state_animation: AnimationPlayer = $AnimationState
+@onready var audio_player: AudioStreamPlayer2D = $EatingPlayer
 
 var is_up: bool = false
 var state_timer: float = randf_range(0, DOWN_TIME)
@@ -22,6 +23,11 @@ func _process(delta: float) -> void:
 	if not state_animation.is_playing():
 		handle_state()
 		state_timer += delta
+	
+	if is_up and not audio_player.playing:
+		audio_player.play()
+	elif not is_up:
+		audio_player.stop()
 
 func _on_hit_area_body_entered(body: Node2D) -> void:
 	if body is CharacterBody2D and body.name == "Character":

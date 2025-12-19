@@ -1,7 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://b8yyc8a0iswvf"]
+[gd_scene load_steps=12 format=3 uid="uid://b8yyc8a0iswvf"]
 
 [ext_resource type="Script" uid="uid://cbomrloxi8trb" path="res://scripts/sunflower.gd" id="1_2rk3j"]
 [ext_resource type="Texture2D" uid="uid://cjh4uuijxjfc6" path="res://assets/bonuses/sunflower.png" id="1_pdk41"]
+[ext_resource type="AudioStream" uid="uid://15lkvdqhccd7" path="res://audio/sounds/bonus_spawned.wav" id="3_o05it"]
+[ext_resource type="AudioStream" uid="uid://rifryuikb8qi" path="res://audio/sounds/bonus_eaten.wav" id="4_43q74"]
 
 [sub_resource type="Animation" id="Animation_o05it"]
 length = 0.001
@@ -174,3 +176,13 @@ libraries = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_jeas2")
+
+[node name="SpawnPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_o05it")
+volume_db = -10.0
+bus = &"Sounds"
+
+[node name="EatPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_43q74")
+volume_db = -5.0
+bus = &"Sounds"

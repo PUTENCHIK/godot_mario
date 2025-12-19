@@ -1,8 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://l28d2angnr61"]
+[gd_scene load_steps=12 format=3 uid="uid://l28d2angnr61"]
 
 [ext_resource type="Script" uid="uid://c452jgbbjyurn" path="res://scripts/bricks_block.gd" id="1_70sxy"]
 [ext_resource type="Texture2D" uid="uid://dclaqpwekf2b3" path="res://assets/tiles/bricks.png" id="1_d0w7u"]
 [ext_resource type="Texture2D" uid="uid://b7usynnpj8tvt" path="res://assets/effects/bricks_destroy.png" id="3_8uej5"]
+[ext_resource type="AudioStream" uid="uid://dhqg1nxir6iky" path="res://audio/sounds/block_hit.wav" id="4_66h5x"]
+[ext_resource type="AudioStream" uid="uid://qr7dax4el38l" path="res://audio/sounds/block_destroying.wav" id="5_mrgsh"]
 
 [sub_resource type="Animation" id="Animation_70sxy"]
 length = 0.001
@@ -232,5 +234,16 @@ collision_mask = 28
 position = Vector2(0, 32.5)
 shape = SubResource("RectangleShape2D_70sxy")
 debug_color = Color(0.8050235, 0.3344341, 0.6428933, 0.41960785)
+
+[node name="HitPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_66h5x")
+volume_db = -8.0
+bus = &"Sounds"
+
+[node name="DestroyPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_mrgsh")
+volume_db = -20.0
+pitch_scale = 1.5
+bus = &"Sounds"
 
 [connection signal="body_entered" from="BricksBlockHitArea" to="." method="_on_area_2d_body_entered"]

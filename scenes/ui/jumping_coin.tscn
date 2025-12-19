@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://cogat7qc8oiuk"]
+[gd_scene load_steps=10 format=3 uid="uid://cogat7qc8oiuk"]
 
 [ext_resource type="Script" uid="uid://gg8tfrewxv55" path="res://scripts/jumping_coin.gd" id="1_absia"]
 [ext_resource type="Texture2D" uid="uid://cdxhlx40hiieo" path="res://assets/other/jumping_coin.png" id="1_hrxlb"]
+[ext_resource type="AudioStream" uid="uid://bpe431ymvu4c7" path="res://audio/sounds/jumping_coin.wav" id="3_i6x06"]
 
 [sub_resource type="Animation" id="Animation_i6x06"]
 length = 0.001
@@ -143,3 +144,8 @@ libraries = {
 libraries = {
 &"": SubResource("AnimationLibrary_gv5pe")
 }
+
+[node name="DropPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_i6x06")
+volume_db = -3.0
+bus = &"Sounds"

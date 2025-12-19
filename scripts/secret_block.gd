@@ -10,6 +10,7 @@ extends StaticBody2D
 @onready var red_mushroom_scene: PackedScene = preload("res://scenes/bonuses/red_mushroom.tscn")
 @onready var green_mushroom_scene: PackedScene = preload("res://scenes/bonuses/green_mushroom.tscn")
 @onready var sunflower_scene: PackedScene = preload("res://scenes/bonuses/sunflower.tscn")
+@onready var hit_player: AudioStreamPlayer2D = $HitPlayer
 
 var spawn_disabled: bool = false
 
@@ -22,6 +23,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 			not animation.is_playing() and Globals.is_block_hit_available:
 		if hit_area_collision.global_position.y > body.global_position.y:
 			return
+		hit_player.play()
 		Globals.toggle_block_hit_available()
 		collision.set_deferred("disabled", false)
 		body.hit_by_block.emit()

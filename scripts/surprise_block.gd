@@ -13,6 +13,7 @@ extends StaticBody2D
 @onready var green_mushroom_scene: PackedScene = preload("res://scenes/bonuses/green_mushroom.tscn")
 @onready var sunflower_scene: PackedScene = preload("res://scenes/bonuses/sunflower.tscn")
 @onready var jumping_coin_scene: PackedScene = preload("res://scenes/ui/jumping_coin.tscn")
+@onready var hit_player: AudioStreamPlayer2D = $HitPlayer
 
 var spawn_disabled: bool = false
 
@@ -23,6 +24,7 @@ func _ready() -> void:
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is CharacterBody2D and body.name == "Character" and not spawn_disabled and \
 			not animation_hit.is_playing() and Globals.is_block_hit_available:
+		hit_player.play()
 		Globals.toggle_block_hit_available()
 		body.hit_by_block.emit()
 		animation_hit.play("hit")
