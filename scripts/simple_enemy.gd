@@ -4,6 +4,8 @@ const BASE_SPEED = 100.0
 const SPEED_DELTA = 20.0
 const GRAVITY = 70.0
 const SCORE_REWARD = 200
+const CHANGE_DIRECTION_INTERVAL = 0.1
+
 @onready var animation: AnimationPlayer = $AnimationPlayer
 @onready var sprite: Sprite2D = $SimpleEnemySprite
 @onready var collision: CollisionShape2D = $SimpleEnemyCollision
@@ -16,6 +18,7 @@ var SPEED: float = BASE_SPEED - SPEED_DELTA + Globals.random.randf_range(0, 2*SP
 var current_state: State
 # false - left, true - right
 @export var direction: bool
+var change_direction_timer: float = CHANGE_DIRECTION_INTERVAL
 
 signal hit_by_character
 signal hit_by_fireball(fireball_direction: bool)
@@ -44,6 +47,12 @@ func handle_walk():
 func update_flip():
 	sprite.flip_h = not direction
 
+func change_direction():
+	if change_direction_timer > CHANGE_DIRECTION_INTERVAL:
+		velocity.x -= get_dir_coef() * 2 * SPEED
+		direction = not direction
+		change_direction_timer = 0.0
+
 func handle_collisions():
 	var collision_count = get_slide_collision_count()
 	for c in collision_count:
@@ -55,8 +64,7 @@ func handle_collisions():
 				collider.handle_enemy_collision(self, normal)
 			else:
 				if abs(normal.x) == 1:
-					velocity.x -= get_dir_coef() * 2 * SPEED
-					direction = not direction
+					change_direction()
 
 func _physics_process(delta: float) -> void:
 	match current_state:
@@ -74,6 +82,8 @@ func _physics_process(delta: float) -> void:
 		handle_collisions()
 		update_flip()
 		move_and_slide()
+		
+		change_direction_timer += delta
 
 func _on_hit_by_character():
 	_on_dead("crushed")
