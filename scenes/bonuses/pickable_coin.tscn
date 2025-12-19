@@ -94,6 +94,8 @@ _data = {
 size = Vector2(42, 62)
 
 [node name="PickableCoin" type="CharacterBody2D"]
+collision_layer = 16
+collision_mask = 29
 script = ExtResource("1_80faj")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
-const BASE_SPEED = 100.0
-const SPEED_DELTA = 20.0
+@export var BASE_SPEED = 100.0
+@export var SPEED_DELTA = 20.0
 const GRAVITY = 70.0
 const SCORE_REWARD = 200
 const CHANGE_DIRECTION_INTERVAL = 0.1
@@ -16,7 +16,7 @@ const CHANGE_DIRECTION_INTERVAL = 0.1
 
 enum State {IDLE, WALK, DEAD}
 
-var SPEED: float = BASE_SPEED - SPEED_DELTA + Globals.random.randf_range(0, 2*SPEED_DELTA)
+var SPEED: float = BASE_SPEED
 var current_state: State
 # false - left, true - right
 @export var direction: bool
@@ -33,6 +33,7 @@ func set_state(state: State):
 	current_state = state
 
 func _ready() -> void:
+	SPEED = BASE_SPEED - SPEED_DELTA + Globals.random.randf_range(0, 2*SPEED_DELTA)
 	set_state(State.WALK)
 	kill_character.connect(_on_kill_character)
 	hit_by_character.connect(_on_hit_by_character)
@@ -44,7 +45,7 @@ func handle_idle():
 	animation.play("idle")
 
 func handle_walk():
-	animation.play("walk")	
+	animation.play("walk")
 	velocity.x = get_dir_coef() * SPEED
 
 func update_flip():

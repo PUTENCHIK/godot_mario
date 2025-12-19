@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://6ol0jj8rqccl"]
+[gd_scene load_steps=18 format=4 uid="uid://6ol0jj8rqccl"]
 
 [ext_resource type="Texture2D" uid="uid://cdp5og1mqnbar" path="res://assets/backgrounds/sky.png" id="1_eio8w"]
 [ext_resource type="Script" uid="uid://l8k8qehfuqpi" path="res://scripts/second_level.gd" id="1_kwjvk"]
@@ -12,6 +12,8 @@
 [ext_resource type="PackedScene" uid="uid://ma228mriiyji" path="res://scenes/blocks/surprise_block.tscn" id="9_crs6a"]
 [ext_resource type="PackedScene" uid="uid://b18e8tog4b6o0" path="res://scenes/blocks/secret_block.tscn" id="9_sxyf2"]
 [ext_resource type="PackedScene" uid="uid://b5vmyqfxs2boa" path="res://scenes/bonuses/pickable_coin.tscn" id="11_ogpjx"]
+[ext_resource type="PackedScene" uid="uid://cgy4k0ll674mv" path="res://scenes/living/simple_enemy.tscn" id="12_vfugf"]
+[ext_resource type="PackedScene" uid="uid://l28d2angnr61" path="res://scenes/blocks/bricks_block.tscn" id="12_y2snj"]
 [ext_resource type="Texture2D" uid="uid://b5070rs8weaiy" path="res://assets/backgrounds/cloud1.png" id="13_ogpjx"]
 [ext_resource type="AudioStream" uid="uid://dgdygapukxfdi" path="res://audio/music/second.mp3" id="14_oks6y"]
 
@@ -54,6 +56,16 @@ position = Vector2(7104, 512)
 UP_TIME = 2.0
 DOWN_TIME = 0.5
 
+[node name="CatcherEnemy5" parent="Catchers" instance=ExtResource("3_5sr3l")]
+position = Vector2(5696, 512)
+UP_TIME = 2.0
+DOWN_TIME = 10.0
+
+[node name="CatcherEnemy6" parent="Catchers" instance=ExtResource("3_5sr3l")]
+position = Vector2(1632, 576)
+UP_TIME = 2.0
+DOWN_TIME = 10.0
+
 [node name="TileMaps" type="Node2D" parent="."]
 
 [node name="Level" parent="TileMaps" instance=ExtResource("2_y6m4c")]
@@ -63,7 +75,7 @@ tile_map_data = PackedByteArray("AAAAAAAABQAAAAAAAAAAAA0AAQAAAAAAAAABAA0AAQAAAAA
 tile_map_data = PackedByteArray("AAD//wAAAQAAAAAAAAD//wEAAQAAAAAAAAD//wIAAQAAAAAAAAD//wMAAQAAAAAAAAD//wQAAQAAAAAAAAD//wUAAQAAAAAAAAD//wYAAQAAAAAAAAD//wcAAQAAAAAAAAD//wgAAQAAAAAAAAD//wkAAQAAAAAAAAD//woAAQAAAAAAAAD//wsAAQAAAAAAAAD/////AQAAAAAAAAD///n/AQAAAAAAAAD///r/AQAAAAAAAAD///v/AQAAAAAAAAD///z/AQAAAAAAAAD///3/AQAAAAAAAAD///7/AQAAAAAAAAB/APr/AQAAAAAAAAB/APv/AQAAAAAAAAB/APz/AQAAAAAAAAB/AP3/AQAAAAAAAAB/AP7/AQAAAAAAAAB/AP//AQAAAAAAAAB/AAAAAQAAAAAAAAB/AAEAAQAAAAAAAAB/AAIAAQAAAAAAAAB/AAMAAQAAAAAAAAB/AAQAAQAAAAAAAAB/AAUAAQAAAAAAAAB/AAYAAQAAAAAAAAB/AAcAAQAAAAAAAAB/AAgAAQAAAAAAAAB/AAkAAQAAAAAAAAB/AAoAAQAAAAAAAAB/AAsAAQAAAAAAAAA=")
 
 [node name="LimitEnemies" parent="TileMaps" instance=ExtResource("4_yl28m")]
-tile_map_data = PackedByteArray("AABMAAsAAQAAAAAAAAAGAAcAAQAAAAAAAAANAAcAAQAAAAAAAAANAAoAAQAAAAAAAAASAAoAAQAAAAAAAAATAAgAAQAAAAAAAAAcAAgAAQAAAAAAAAAaAAQAAQAAAAAAAAAUAAQAAQAAAAAAAAAdAAkAAQAAAAAAAAAjAAkAAQAAAAAAAAAjAAYAAQAAAAAAAAApAAYAAQAAAAAAAAApAAIAAQAAAAAAAAAxAAIAAQAAAAAAAABaAAUAAQAAAAAAAABfAAUAAQAAAAAAAABIAAIAAQAAAAAAAABOAAIAAQAAAAAAAAA=")
+tile_map_data = PackedByteArray("AABMAAsAAQAAAAAAAAAGAAcAAQAAAAAAAAANAAcAAQAAAAAAAAANAAoAAQAAAAAAAAASAAoAAQAAAAAAAAATAAgAAQAAAAAAAAAcAAgAAQAAAAAAAAAaAAQAAQAAAAAAAAAUAAQAAQAAAAAAAAAjAAkAAQAAAAAAAAApAAYAAQAAAAAAAAAxAAIAAQAAAAAAAABaAAUAAQAAAAAAAABfAAUAAQAAAAAAAABIAAIAAQAAAAAAAABOAAIAAQAAAAAAAAAFAAsAAQAAAAAAAAAdAAkAAQAAAAAAAAA=")
 
 [node name="DeathArea" type="Area2D" parent="."]
 collision_layer = 64
@@ -102,6 +114,9 @@ position = Vector2(3872, 608)
 [node name="SurpriseBlock2" parent="Static" instance=ExtResource("9_crs6a")]
 position = Vector2(3040, 384)
 
+[node name="SurpriseBlock3" parent="Static" instance=ExtResource("9_crs6a")]
+position = Vector2(6336, 544)
+
 [node name="SecretBlock" parent="Static" instance=ExtResource("9_sxyf2")]
 position = Vector2(4288, 608)
 
@@ -112,16 +127,16 @@ position = Vector2(4352, 352)
 position = Vector2(4416, 96)
 
 [node name="PickableCoin" parent="Static" instance=ExtResource("11_ogpjx")]
-position = Vector2(544, 480)
+position = Vector2(480, 480)
 
 [node name="PickableCoin2" parent="Static" instance=ExtResource("11_ogpjx")]
-position = Vector2(608, 480)
+position = Vector2(544, 480)
 
 [node name="PickableCoin3" parent="Static" instance=ExtResource("11_ogpjx")]
-position = Vector2(672, 480)
+position = Vector2(736, 480)
 
 [node name="PickableCoin4" parent="Static" instance=ExtResource("11_ogpjx")]
-position = Vector2(736, 480)
+position = Vector2(800, 480)
 
 [node name="PickableCoin5" parent="Static" instance=ExtResource("11_ogpjx")]
 position = Vector2(6848, 480)
@@ -129,8 +144,47 @@ position = Vector2(6848, 480)
 [node name="PickableCoin6" parent="Static" instance=ExtResource("11_ogpjx")]
 position = Vector2(7104, 480)
 
+[node name="BricksBlock" parent="Static" instance=ExtResource("12_y2snj")]
+position = Vector2(6272, 544)
+
+[node name="BricksBlock2" parent="Static" instance=ExtResource("12_y2snj")]
+position = Vector2(6400, 544)
+multiple_coin_chance = 0.5
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="SimpleEnemy2" parent="Enemies" instance=ExtResource("12_vfugf")]
+position = Vector2(672, 480)
+collision_mask = 239
+BASE_SPEED = 40.0
+SPEED_DELTA = 10.0
+
+[node name="SimpleEnemy3" parent="Enemies" instance=ExtResource("12_vfugf")]
+position = Vector2(1403, 485)
+direction = true
+
+[node name="SimpleEnemy4" parent="Enemies" instance=ExtResource("12_vfugf")]
+position = Vector2(1506, 235)
+
+[node name="SimpleEnemy5" parent="Enemies" instance=ExtResource("12_vfugf")]
+position = Vector2(2731, 162)
+direction = true
+
+[node name="SimpleEnemy6" parent="Enemies" instance=ExtResource("12_vfugf")]
+position = Vector2(4728, 145)
+BASE_SPEED = 750.0
+SPEED_DELTA = 0.0
+direction = true
+
+[node name="SimpleEnemy7" parent="Enemies" instance=ExtResource("12_vfugf")]
+position = Vector2(5131, 696)
+
+[node name="SimpleEnemy8" parent="Enemies" instance=ExtResource("12_vfugf")]
+position = Vector2(5954, 326)
+direction = true
+
 [node name="Spawn" type="Marker2D" parent="."]
-position = Vector2(96, 672)
+position = Vector2(64, 672)
 
 [node name="FinishBigCastle" parent="." instance=ExtResource("7_yl28m")]
 position = Vector2(7819, 383)
