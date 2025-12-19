@@ -23,7 +23,7 @@ func _ready() -> void:
 	if len(levels.keys()) == 0:
 		print("[ERROR] No levels")
 		return
-	load_level("First")
+	load_level("Second")
 	character_to_spawn()
 	limit_character_camera()
 	set_menu_size()
@@ -139,7 +139,6 @@ func _on_restart_level():
 	set_menu_size()
 
 func _on_level_finished():
-	load_character()
 	load_level("Second")
 	character_to_spawn()
 	limit_character_camera()

@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://l28d2angnr61" path="res://scenes/blocks/bricks_block.tscn" id="5_iq620"]
 [ext_resource type="PackedScene" uid="uid://ma228mriiyji" path="res://scenes/blocks/surprise_block.tscn" id="6_y0g2d"]
 [ext_resource type="PackedScene" uid="uid://cgy4k0ll674mv" path="res://scenes/living/simple_enemy.tscn" id="7_2ubv2"]
-[ext_resource type="PackedScene" uid="uid://c7wk7dhm1ls0y" path="res://scenes/levels/finish_little_castle.tscn" id="9_4ooow"]
+[ext_resource type="PackedScene" uid="uid://c7wk7dhm1ls0y" path="res://scenes/other/finish_little_castle.tscn" id="9_4ooow"]
 [ext_resource type="PackedScene" uid="uid://b18e8tog4b6o0" path="res://scenes/blocks/secret_block.tscn" id="10_y0g2d"]
 [ext_resource type="PackedScene" uid="uid://yy8gyfvao266" path="res://scenes/living/catcher_enemy.tscn" id="12_2ubv2"]
 
