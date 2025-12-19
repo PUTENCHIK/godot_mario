@@ -1,15 +1,18 @@
 extends CharacterBody2D
 
-const SPEED = 250.0
+const SPEED_SMALL = 250.0
+const SPEED_BIG = 275.0
 const JUMP_VELOCITY = -600.0
 const JUMP_EXTRA_VELOCITY = -55.0
 const GRAVITY = 3200.0
 const MAX_JUMP_TIME = 1.0
 const SHOOTING_INTERVAL = 0.4
+const INVULNERABILITY_TIME = 2.0
 
 enum State {IDLE, RUN, JUMP, DEAD}
 
 @onready var animation = $AnimationPlayer
+@onready var animation_invulnerability = $AnimationInvulnerability
 @onready var sprite = $CharacterSprite
 @onready var collision = $CharacterCollision
 @onready var fireball_scene: PackedScene = preload("res://scenes/other/fireball.tscn")
@@ -17,11 +20,35 @@ enum State {IDLE, RUN, JUMP, DEAD}
 var current_state: State = State.IDLE
 var jump_timer: float = 0.0
 var jump_from_enemy: bool = false
+var is_big: bool = false
 var is_shooting_enable: bool = false
 var shooting_timer: float = 0.0
+var is_invulnerable: bool = false
+var invulnerability_timer: float = INVULNERABILITY_TIME
 
 signal hit_by_block
 signal hit_by_enemy
+signal toggle_invulnerability(enable: bool)
+
+func play_animation(anim: String):
+	var animations = {
+		true: {
+			"idle": "big_idle",
+			"run": "big_run",
+			"jump": "big_jump",
+			"dead": "big_dead",
+		},
+		false: {
+			"idle": "idle",
+			"run": "run",
+			"jump": "jump",
+			"dead": "dead",
+		},
+	}
+	animation.play(animations[is_big][anim])
+
+func get_speed() -> float:
+	return SPEED_BIG if is_big else SPEED_SMALL
 
 func set_state(new_state: State):
 	current_state = new_state
@@ -32,7 +59,9 @@ func _ready() -> void:
 	set_state(State.IDLE)
 	hit_by_block.connect(_on_hit_by_block)
 	hit_by_enemy.connect(_on_hit_by_enemy)
+	toggle_invulnerability.connect(_on_toggle_invulnerability)
 	Globals.game_over.connect(_on_hit_by_enemy)
+	Globals.red_mushroom_eaten.connect(_on_red_mushroom_eaten)
 	Globals.sunflower_eaten.connect(_on_sunflower_eaten)
 
 func _input(event: InputEvent) -> void:
@@ -49,25 +78,25 @@ func _input(event: InputEvent) -> void:
 		Globals.coins -= 1
 
 func handle_idle():
-	animation.play("idle")
+	play_animation("idle")
 	
 	var direction = Input.get_axis("left", "right")
 	if direction != 0:
-		velocity.x = direction * SPEED
+		velocity.x = direction * get_speed()
 		set_state(State.RUN)
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED / 14)
+		velocity.x = move_toward(velocity.x, 0, get_speed() / 14)
 	
 	if Input.is_action_just_pressed("jump"):
 		velocity.y = JUMP_VELOCITY
 		set_state(State.JUMP)
 
 func handle_run():
-	animation.play("run")
+	play_animation("run")
 	
 	var direction = Input.get_axis("left", "right")
 	if direction != 0:
-		velocity.x = direction * SPEED
+		velocity.x = direction * get_speed()
 	else:
 		set_state(State.IDLE)
 		return
@@ -77,9 +106,9 @@ func handle_run():
 		set_state(State.JUMP)
 
 func handle_jump():
-	animation.play("jump")
+	play_animation("jump")
 	var direction = Input.get_axis("left", "right")
-	velocity.x = lerp(velocity.x, direction * SPEED, 0.2)
+	velocity.x = lerp(velocity.x, direction * get_speed(), 0.2)
 	
 	# While still pressing 'jump', character jumps higher, but not when
 	# character already is falling and unless he jumped from enemy
@@ -95,16 +124,24 @@ func update_flip():
 	if direction != 0:
 		sprite.flip_h = velocity.x < 0
 
+func take_hit_by_enemy():
+	if is_big:
+		is_big = false
+		toggle_invulnerability.emit(true)
+		Globals.character_not_big_anymore.emit()
+	elif not is_invulnerable:
+		Globals.game_over.emit()
+
 func handle_enemy_collision(enemy: CharacterBody2D, normal: Vector2):
 	if abs(normal.x) > 0.5:
-		Globals.game_over.emit()
+		take_hit_by_enemy()
 	elif abs(normal.y) > 0.5:
 		if global_position.y < enemy.global_position.y:
 			enemy.hit_by_character.emit()
 			velocity.y = JUMP_VELOCITY
 			jump_from_enemy = true
 		else:
-			Globals.game_over.emit()
+			take_hit_by_enemy()
 	else:
 		print("[WARN] Character didn't handle collision with %s" % [enemy.name])
 
@@ -126,6 +163,23 @@ func handle_collisions():
 			elif "PickableCoin" in collider.name:
 				collider.taken.emit()
 
+func _on_toggle_invulnerability(enable: bool):
+	if enable:
+		is_invulnerable = true
+		set_collision_mask_value(4, false)
+		invulnerability_timer = 0.0
+		animation_invulnerability.play("invulnerable")
+		Globals.character_start_rebirth.emit(false)
+	else:
+		is_invulnerable = false
+		set_collision_mask_value(4, true)
+		animation_invulnerability.stop()
+		Globals.character_end_rebirth.emit(false)
+
+func handle_invulnerability():
+	if is_invulnerable and invulnerability_timer > INVULNERABILITY_TIME:
+		toggle_invulnerability.emit(false)
+
 func _physics_process(delta: float) -> void:
 	match current_state:
 		State.IDLE:
@@ -141,11 +195,13 @@ func _physics_process(delta: float) -> void:
 		velocity.y += GRAVITY * delta
 	
 	handle_collisions()
+	handle_invulnerability()
 	update_flip()
 	move_and_slide()
 	
 	jump_timer += delta
 	shooting_timer += delta
+	invulnerability_timer += delta
 	
 	if is_on_floor() and current_state != State.JUMP:
 		Globals.reset_multi_kill()
@@ -166,9 +222,12 @@ func _on_hit_by_enemy():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	set_collision_mask_value(4, false)
 	velocity *= 0
-	animation.play("dead")
+	play_animation("dead")
 	await animation.animation_finished
 	process_mode = Node.PROCESS_MODE_INHERIT
+
+func _on_red_mushroom_eaten():
+	is_big = true
 
 func _on_sunflower_eaten():
 	is_shooting_enable = true

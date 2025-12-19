@@ -56,6 +56,7 @@ position = Vector2(544, 544)
 
 [node name="BricksBlock2" parent="Static" instance=ExtResource("5_iq620")]
 position = Vector2(672, 544)
+multiple_coin_chance = 1.0
 
 [node name="BricksBlock3" parent="Static" instance=ExtResource("5_iq620")]
 position = Vector2(736, 544)

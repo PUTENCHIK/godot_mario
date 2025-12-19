@@ -19,7 +19,7 @@ signal update_menu_elements
 func update_font(font_name: String):
 	if font_name not in fonts:
 		print("[ERROR] No such font '%s' in files" % [font_name])
-		pass
+		return
 	main_theme.default_font = fonts[font_name]
 	current_font = font_name
 

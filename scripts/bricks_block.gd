@@ -4,6 +4,8 @@ extends StaticBody2D
 @export var multiple_coin_chance: float = 0.1
 
 @onready var animation: AnimationPlayer = $AnimationPlayer
+@onready var collision: CollisionShape2D = $BricksBlockCollision
+@onready var hit_area: Area2D = $BricksBlockHitArea
 @onready var coin_node: Node2D = $CoinNode
 @onready var jumping_coin_scene: PackedScene = preload("res://scenes/ui/jumping_coin.tscn")
 
@@ -17,12 +19,18 @@ func _ready() -> void:
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is CharacterBody2D and body.name == "Character" and \
 			not animation.is_playing() and Globals.is_block_hit_available:
+		_handle_character_hit(body)
+
+func _handle_character_hit(character: CharacterBody2D):
+	character.hit_by_block.emit()
+	_try_spawn_coin()
+	if not spawn_disabled or not character.is_big:
 		Globals.toggle_block_hit_available()
-		body.hit_by_block.emit()
 		animation.play("hit")
-		_try_spawn_coin()
 		await animation.animation_finished
 		Globals.toggle_block_hit_available()
+	elif character.is_big:
+		_destroy()
 
 func _try_spawn_coin():
 	if not spawn_disabled:
@@ -45,3 +53,12 @@ func _spawn_coin():
 	coin_node.add_child(coin)
 	coin.global_position = global_position
 	coins_spawned += 1
+
+func _destroy():
+	Globals.toggle_block_hit_available()
+	collision.disabled = true
+	hit_area.monitoring = false
+	animation.play("destroy")
+	await animation.animation_finished
+	Globals.toggle_block_hit_available()
+	queue_free()

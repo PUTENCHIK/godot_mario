@@ -28,6 +28,7 @@ func _ready() -> void:
 	Globals.level_finished.connect(_on_level_finished)
 	Globals.red_mushroom_eaten.connect(_on_red_mushroom_eaten)
 	Globals.sunflower_eaten.connect(_on_sunflower_eaten)
+	Globals.character_not_big_anymore.connect(_on_character_not_big_anymore)
 	Globals.clear_bonuses.connect(_on_clear_bonuses)
 
 func _process(delta: float) -> void:
@@ -56,12 +57,14 @@ func _update_coins():
 	var text = str(Globals.coins)
 	coins_label.text = text
 
-func _on_character_died():
-	decrease_time = false
+func _on_character_died(freeze_time: bool):
+	if freeze_time:
+		decrease_time = false
 
-func _on_character_resurrected():
+func _on_character_resurrected(zero_time: bool):
 	decrease_time = true
-	time_left = Globals.TIME_ON_LEVEL
+	if zero_time:
+		time_left = Globals.TIME_ON_LEVEL
 
 func _on_level_finished():
 	zero_timer()
@@ -83,6 +86,12 @@ func _on_sunflower_eaten():
 	if not is_sunflower_shown:
 		is_sunflower_shown = true
 		_add_display_bonus("sunflower")
+
+func _on_character_not_big_anymore():
+	for child in bonuses_box.get_children():
+		if child.texture == bonuses_textures["red_mushroom"]:
+			is_red_mushroom_shown = false
+			child.queue_free()
 
 func _on_clear_bonuses():
 	for child in bonuses_box.get_children():

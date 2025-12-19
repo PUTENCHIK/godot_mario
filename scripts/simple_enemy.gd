@@ -84,7 +84,7 @@ func _on_hit_by_fireball(fireball_direction: bool):
 func _on_dead(animation_name: String):
 	if current_state != State.DEAD:
 		set_state(State.DEAD)
-		SPEED = 0
+		velocity.x = 0
 		collision.disabled = true
 		animation.play(animation_name)
 		update_flip()
@@ -96,8 +96,8 @@ func _on_dead(animation_name: String):
 		await animation.animation_finished
 		self.queue_free()
 
-func _on_character_died():
+func _on_character_died(empty: bool):
 	set_collision_mask_value(3, false)
 
-func _on_character_resurrected():
+func _on_character_resurrected(empty: bool):
 	set_collision_mask_value(3, true)

@@ -27,12 +27,13 @@ var is_block_hit_available: bool = true
 
 signal game_over
 signal restart_level
-signal character_start_rebirth
-signal character_end_rebirth
+signal character_start_rebirth(freeze_time: bool)
+signal character_end_rebirth(zero_time: bool)
 
 signal level_finished
 signal red_mushroom_eaten
 signal sunflower_eaten
+signal character_not_big_anymore
 signal clear_bonuses
 
 func _ready() -> void:
@@ -75,12 +76,12 @@ func _on_game_over():
 	if extra_lives > 0:
 		if not is_level_reloading:
 			is_level_reloading = true
-			character_start_rebirth.emit()
+			character_start_rebirth.emit(true)
 			await get_tree().create_timer(DELAY_AFTER_DEATH).timeout
 			restart_level.emit()
 			extra_lives -= 1
 			is_level_reloading = false
-			character_end_rebirth.emit()
+			character_end_rebirth.emit(true)
 	else:
 		pause()
 		is_game_over = true

@@ -6,7 +6,7 @@ extends Node2D
 func _ready() -> void:
 	jump_animation.play("jump")
 	rotate_animation.play("default")
-	await jump_animation.animation_finished
 	Globals.add_coins(1)
 	Globals.score += Globals.COIN_REWARD
+	await jump_animation.animation_finished
 	queue_free()
