@@ -152,7 +152,7 @@ func handle_collisions():
 		var collider = slide_collision.get_collider()
 		var normal = slide_collision.get_normal()
 		if collider:
-			if "Enemy" in collider.name:
+			if "SimpleEnemy" in collider.name:
 				handle_enemy_collision(collider, normal)
 			elif "RedMushroom" in collider.name:
 				collider.eaten.emit()
