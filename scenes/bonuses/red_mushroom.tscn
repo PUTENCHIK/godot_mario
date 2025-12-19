@@ -1,0 +1,95 @@
+[gd_scene load_steps=9 format=3 uid="uid://dtutxxo2b6c38"]
+
+[ext_resource type="Script" uid="uid://co6gsykvaxbo8" path="res://scripts/red_mashroom.gd" id="1_us3pn"]
+[ext_resource type="Texture2D" uid="uid://c1j4vhc654558" path="res://assets/bonuses/red_mushroom.png" id="2_nauxg"]
+[ext_resource type="AudioStream" uid="uid://15lkvdqhccd7" path="res://audio/sounds/bonus_spawned.wav" id="3_nauxg"]
+[ext_resource type="AudioStream" uid="uid://rifryuikb8qi" path="res://audio/sounds/bonus_eaten.wav" id="4_itv02"]
+
+[sub_resource type="Animation" id="Animation_3fmdd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RedMashroomCollision:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0009999999),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RedMashroomSprite:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_q62dt"]
+resource_name = "appear"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RedMashroomCollision:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 1), Vector2(0, -58), Vector2(0, -58)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RedMashroomSprite:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -59), Vector2(0, -59)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ogt58"]
+_data = {
+&"RESET": SubResource("Animation_3fmdd"),
+&"appear": SubResource("Animation_q62dt")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3fmdd"]
+size = Vector2(52, 52)
+
+[node name="RedMushroom" type="CharacterBody2D"]
+collision_layer = 16
+collision_mask = 157
+script = ExtResource("1_us3pn")
+
+[node name="RedMashroomSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_nauxg")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ogt58")
+}
+
+[node name="RedMashroomCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_3fmdd")
+
+[node name="SpawnPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_nauxg")
+volume_db = -10.0
+bus = &"Sounds"
+
+[node name="EatPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_itv02")
+volume_db = -5.0
+bus = &"Sounds"

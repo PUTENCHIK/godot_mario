@@ -1,0 +1,81 @@
+[gd_resource type="TileSet" load_steps=13 format=3 uid="uid://bgwf7mjnf2rmd"]
+
+[ext_resource type="Texture2D" uid="uid://cbay3lce85qe5" path="res://assets/tiles/base_2.png" id="1_7utna"]
+[ext_resource type="Texture2D" uid="uid://xbjbcgn0pc1f" path="res://assets/tiles/base_1.png" id="2_pp4e8"]
+[ext_resource type="Texture2D" uid="uid://xs4jr2r6amnl" path="res://assets/tiles/pipes.png" id="3_7116a"]
+[ext_resource type="Texture2D" uid="uid://cyqm8uwutqdx8" path="res://assets/tiles/tree.png" id="3_kwbh6"]
+[ext_resource type="Texture2D" uid="uid://b6rox0iwajpi8" path="res://assets/tiles/empty.png" id="4_pp4e8"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_e5o2m"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hii2a"]
+resource_name = "Base 2"
+texture = ExtResource("1_7utna")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ld05k"]
+resource_name = "Base 1"
+texture = ExtResource("2_pp4e8")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_33f4o"]
+resource_name = "Tree"
+texture = ExtResource("3_kwbh6")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-24, -28, -24, -32, 32, -32, 32, 23, 30, 23, 30, 27, 26, 27, 26, 32, 7, 32, 7, 27, 3, 27, 3, 23, -1, 23, -1, 27, -5, 27, -5, 32, -24, 32, -24, 27, -28, 27, -28, 23, -32, 23, -32, -19, -28, -19, -28, -28)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 23, 30, 23, 30, 27, 26, 27, 26, 32, 6, 32, 6, 27, 2, 27, 2, 23, -2, 23, -2, 27, -6, 27, -6, 32, -26, 32, -26, 27, -30, 27, -30, 23, -32, 23)
+2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+3:0/0 = 0
+3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(24, -28, 24, -32, -32, -32, -32, 23, -30, 23, -30, 27, -26, 27, -26, 32, -7, 32, -7, 27, -3, 27, -3, 23, 1, 23, 1, 27, 5, 27, 5, 32, 24, 32, 24, 27, 28, 27, 28, 23, 32, 23, 32, -19, 28, -19, 28, -28)
+2:1/0 = 0
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4ooow"]
+resource_name = "Pipes"
+texture = ExtResource("3_7116a")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32, -32, -32, -32, -32)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+0:1/0 = 0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-26, -32, 32, -32, 32, 32, -26, 32)
+1:1/0 = 0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 26, -32, 26, 32, -32, 32)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kwbh6"]
+resource_name = "Tree without collision"
+texture = ExtResource("3_kwbh6")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+2:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7116a"]
+resource_name = "Empty without collision"
+texture = ExtResource("4_pp4e8")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+
+[resource]
+tile_size = Vector2i(64, 64)
+physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 157
+physics_layer_0/collision_priority = 2.0
+physics_layer_0/physics_material = SubResource("PhysicsMaterial_e5o2m")
+sources/0 = SubResource("TileSetAtlasSource_hii2a")
+sources/1 = SubResource("TileSetAtlasSource_ld05k")
+sources/3 = SubResource("TileSetAtlasSource_4ooow")
+sources/5 = SubResource("TileSetAtlasSource_7116a")
+sources/2 = SubResource("TileSetAtlasSource_33f4o")
+sources/4 = SubResource("TileSetAtlasSource_kwbh6")

@@ -1,0 +1,249 @@
+[gd_scene load_steps=12 format=3 uid="uid://l28d2angnr61"]
+
+[ext_resource type="Script" uid="uid://c452jgbbjyurn" path="res://scripts/bricks_block.gd" id="1_70sxy"]
+[ext_resource type="Texture2D" uid="uid://dclaqpwekf2b3" path="res://assets/tiles/bricks.png" id="1_d0w7u"]
+[ext_resource type="Texture2D" uid="uid://b7usynnpj8tvt" path="res://assets/effects/bricks_destroy.png" id="3_8uej5"]
+[ext_resource type="AudioStream" uid="uid://dhqg1nxir6iky" path="res://audio/sounds/block_hit.wav" id="4_66h5x"]
+[ext_resource type="AudioStream" uid="uid://qr7dax4el38l" path="res://audio/sounds/block_destroying.wav" id="5_mrgsh"]
+
+[sub_resource type="Animation" id="Animation_70sxy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BricksBlockSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BricksBlockCollision:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BricksBlockSprite:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_d0w7u")]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("BricksBlockSprite:hframes")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("BricksBlockSprite:frame")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_kwnch"]
+resource_name = "destroy"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BricksBlockSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_8uej5")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BricksBlockSprite:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [6]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BricksBlockSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 5]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("BricksBlockSprite:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("BricksBlockCollision:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_bf4qt"]
+resource_name = "hit"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BricksBlockSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.08, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -12), Vector2(0, -12), Vector2(0, -10), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BricksBlockCollision:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.08, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -12), Vector2(0, -12), Vector2(0, -10), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BricksBlockSprite:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_d0w7u")]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("BricksBlockSprite:hframes")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("BricksBlockSprite:frame")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sd6tn"]
+_data = {
+&"RESET": SubResource("Animation_70sxy"),
+&"destroy": SubResource("Animation_kwnch"),
+&"hit": SubResource("Animation_bf4qt")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gysv1"]
+size = Vector2(64, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_70sxy"]
+size = Vector2(64, 1)
+
+[node name="BricksBlock" type="StaticBody2D"]
+collision_mask = 143
+script = ExtResource("1_70sxy")
+
+[node name="CoinNode" type="Node2D" parent="."]
+
+[node name="BricksBlockSprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_d0w7u")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_sd6tn")
+}
+
+[node name="BricksBlockCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_gysv1")
+
+[node name="BricksBlockHitArea" type="Area2D" parent="."]
+collision_mask = 28
+
+[node name="HitCollision" type="CollisionShape2D" parent="BricksBlockHitArea"]
+position = Vector2(0, 32.5)
+shape = SubResource("RectangleShape2D_70sxy")
+debug_color = Color(0.8050235, 0.3344341, 0.6428933, 0.41960785)
+
+[node name="HitPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_66h5x")
+volume_db = -8.0
+bus = &"Sounds"
+
+[node name="DestroyPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_mrgsh")
+volume_db = -20.0
+pitch_scale = 1.5
+bus = &"Sounds"
+
+[connection signal="body_entered" from="BricksBlockHitArea" to="." method="_on_area_2d_body_entered"]

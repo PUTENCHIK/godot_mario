@@ -1,0 +1,146 @@
+[gd_scene load_steps=4 format=3 uid="uid://dbrpvv01xqhmr"]
+
+[ext_resource type="Script" uid="uid://cn2cqah3et435" path="res://scripts/menu.gd" id="1_vjb58"]
+[ext_resource type="Theme" uid="uid://6fqxqvibi1ml" path="res://resources/main_theme.tres" id="1_yqeox"]
+[ext_resource type="StyleBox" uid="uid://g2jcun3y34sm" path="res://resources/ui_style.tres" id="2_c2n5p"]
+
+[node name="Menu" type="Node"]
+process_mode = 3
+script = ExtResource("1_vjb58")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("2_c2n5p")
+
+[node name="CenterContainer" type="CenterContainer" parent="Panel"]
+layout_mode = 0
+offset_right = 784.0
+offset_bottom = 408.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/CenterContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Main" type="VBoxContainer" parent="Panel/CenterContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="PauseLabel" type="Label" parent="Panel/CenterContainer/MarginContainer/Main"]
+layout_mode = 2
+theme = ExtResource("1_yqeox")
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 48
+text = "PAUSE"
+horizontal_alignment = 1
+
+[node name="Settings" type="VBoxContainer" parent="Panel/CenterContainer/MarginContainer/Main"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/CenterContainer/MarginContainer/Main/Settings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/CenterContainer/MarginContainer/Main/Settings/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_yqeox")
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+text = "Show FPS:"
+
+[node name="CheckButton" type="CheckButton" parent="Panel/CenterContainer/MarginContainer/Main/Settings/HBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/CenterContainer/MarginContainer/Main/Settings"]
+layout_mode = 2
+
+[node name="FontsLabel" type="Label" parent="Panel/CenterContainer/MarginContainer/Main/Settings/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_yqeox")
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+text = "Font:"
+
+[node name="FontsOptionButton" type="OptionButton" parent="Panel/CenterContainer/MarginContainer/Main/Settings/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_yqeox")
+
+[node name="MusicBox" type="HBoxContainer" parent="Panel/CenterContainer/MarginContainer/Main/Settings"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MusicLabel" type="Label" parent="Panel/CenterContainer/MarginContainer/Main/Settings/MusicBox"]
+layout_mode = 2
+theme = ExtResource("1_yqeox")
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 18
+text = "Music:"
+
+[node name="MusicValue" type="HSlider" parent="Panel/CenterContainer/MarginContainer/Main/Settings/MusicBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme = ExtResource("1_yqeox")
+max_value = 1.0
+step = 0.1
+value = 0.3
+
+[node name="SoundsBox" type="HBoxContainer" parent="Panel/CenterContainer/MarginContainer/Main/Settings"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SoundsLabel" type="Label" parent="Panel/CenterContainer/MarginContainer/Main/Settings/SoundsBox"]
+layout_mode = 2
+theme = ExtResource("1_yqeox")
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 18
+text = "Sounds:"
+
+[node name="SoundsValue" type="HSlider" parent="Panel/CenterContainer/MarginContainer/Main/Settings/SoundsBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme = ExtResource("1_yqeox")
+max_value = 1.0
+step = 0.1
+value = 0.3
+
+[node name="Buttons" type="VBoxContainer" parent="Panel/CenterContainer/MarginContainer/Main"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ResumeButton" type="Button" parent="Panel/CenterContainer/MarginContainer/Main/Buttons"]
+layout_mode = 2
+theme = ExtResource("1_yqeox")
+theme_override_font_sizes/font_size = 18
+text = "Resume"
+
+[node name="ExitButton" type="Button" parent="Panel/CenterContainer/MarginContainer/Main/Buttons"]
+layout_mode = 2
+theme = ExtResource("1_yqeox")
+theme_override_font_sizes/font_size = 18
+text = "Exit"
+
+[connection signal="toggled" from="Panel/CenterContainer/MarginContainer/Main/Settings/HBoxContainer/CheckButton" to="." method="_on_check_button_toggled"]
+[connection signal="item_selected" from="Panel/CenterContainer/MarginContainer/Main/Settings/VBoxContainer/FontsOptionButton" to="." method="_on_font_changed"]
+[connection signal="value_changed" from="Panel/CenterContainer/MarginContainer/Main/Settings/MusicBox/MusicValue" to="." method="_on_music_value_value_changed"]
+[connection signal="value_changed" from="Panel/CenterContainer/MarginContainer/Main/Settings/SoundsBox/SoundsValue" to="." method="_on_sounds_value_value_changed"]
+[connection signal="pressed" from="Panel/CenterContainer/MarginContainer/Main/Buttons/ResumeButton" to="." method="_resume_game"]
+[connection signal="pressed" from="Panel/CenterContainer/MarginContainer/Main/Buttons/ExitButton" to="." method="_exit_game"]
